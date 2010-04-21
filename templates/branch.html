@@ -1,0 +1,20 @@
+<%inherit file="base.html"/>
+<%def name="title()">
+Branch ${branch}
+</%def>
+
+<%def name="content()">
+<section>
+  <h1>${self.title()}</h1>
+
+  <h2>Packages in Branch</h2>
+  <ul>
+    % for pkg in packages:
+    <li>
+      <a href="/${branch}/${pkg}">${pkg}</a>
+    </li>
+    % endfor
+  </ul>
+
+</section>
+</%def>

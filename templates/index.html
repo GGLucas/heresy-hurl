@@ -1,0 +1,19 @@
+<%inherit file="base.html"/>
+<%def name="title()">
+Branch Index
+</%def>
+
+<%def name="content()">
+<section>
+  <h1>${self.title()}</h1>
+
+  <h2>Branches in Repo</h2>
+  <ul>
+    % for branch in branches:
+    <li>
+      <a href="/${branch}">${branch}</a>
+    </li>
+    % endfor
+  </ul>
+</section>
+</%def>
