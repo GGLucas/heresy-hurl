@@ -8,6 +8,9 @@ except ImportError:
 
 class HurlRepo(dulwich.repo.Repo):
     def get_branches(self):
+        """
+            Get all branches in the entire repo.
+        """
         branches = []
 
         for ref in self.get_refs():
@@ -16,22 +19,46 @@ class HurlRepo(dulwich.repo.Repo):
 
         return branches
 
+    def get_packages(self):
+        """
+            Get all packages in the entire repo and the branches
+            that they are in.
+        """
+        packages = {}
+
+        for branch in self.get_branches():
+            for package in self.packages_in_branch(branch):
+                # First time we see this package, add it to the dict
+                if package not in packages:
+                    packages[package] = []
+
+                # Add this branch as holding this package
+                packages[package].append(branch)
+
+        return packages
+
+
     def branches_with_package(self, package):
+        """
+            Get all branches that have a certain package in it.
+        """
         branches = []
 
-        for ref in self.get_refs():
-            if ref.startswith("refs/heads/"):
-                branchname = ref[11:]
-                tree = self.get_package_tree(branchname, package)
+        for branch in self.get_branches():
+            tree = self.get_package_tree(branch, package)
 
+            if tree is not None:
                 for entry in tree.entries():
                     if entry[1] == "Cakefile":
-                        branches.append(branchname)
+                        branches.append(branch)
                         break
 
         return branches
 
     def packages_in_branch(self, branch):
+        """
+            Get all packages in a certain branch.
+        """
         packages = []
         sha = self.refs["refs/heads/"+branch]
         commit = self.commit(sha)
@@ -51,6 +78,9 @@ class HurlRepo(dulwich.repo.Repo):
         return packages
 
     def get_package_tree(self, branch, package):
+        """
+            Get the tree of files under a certain package in a branch.
+        """
         sha = self.refs["refs/heads/"+branch]
         commit = self.commit(sha)
         tree = self.tree(commit.tree)
@@ -64,6 +94,9 @@ class HurlRepo(dulwich.repo.Repo):
                     return None
 
     def get_package_cakefile(self, branch=None, package=None, tree=None):
+        """
+            Get the parsed cakefile of a package in a branch.
+        """
         if branch is not None and package is not None:
             tree = self.get_package_tree(branch, package)
         if tree is None:
@@ -77,6 +110,9 @@ class HurlRepo(dulwich.repo.Repo):
                 return cakefile
 
     def get_package_file(self, filename, branch=None, package=None, tree=None):
+        """
+            Get the contents of a file in the package directory.
+        """
         if branch is not None and package is not None:
             tree = self.get_package_tree(branch, package)
         if tree is None:
@@ -87,6 +123,9 @@ class HurlRepo(dulwich.repo.Repo):
                 return self.get_blob(entry[2]).as_raw_string()
 
     def get_package_files(self, branch=None, package=None, tree=None):
+        """
+            Get a list of files in the package directory.
+        """
         if branch is not None and package is not None:
             tree = self.get_package_tree(branch, package)
         if tree is None:

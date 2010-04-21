@@ -1,17 +1,19 @@
 <%inherit file="base.html"/>
 <%def name="title()">
-Branch Index
+Repository Index
 </%def>
 
 <%def name="content()">
-<section>
+<header>
   <h1>${self.title()}</h1>
+</header>
 
-  <h2>Branches in Repo</h2>
+<section>
+  <h1>Packages in Repo</h1>
   <ul>
-    % for branch in branches:
+    % for package in packages:
     <li>
-      <a href="/${branch}">${branch}</a>
+      <a href="/${package}">${package}</a>
     </li>
     % endfor
   </ul>

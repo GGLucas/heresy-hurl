@@ -17,15 +17,23 @@ class Hurl(object):
     @cherrypy.expose
     def index(self):
         return self.lookup.get_template("index.html").render(
-                branches=self.repo.get_branches())
+                packages=self.repo.get_packages())
 
     @cherrypy.expose
-    def default(self, branch, package=None):
-        if package is None:
+    def default(self, package, branch=None):
+        if package == "branch":
+            # List all packages in a branch
             return self.lookup.get_template("branch.html").render(
                 branch=branch,
                 packages=self.repo.packages_in_branch(branch))
+
+        if branch is None:
+            # List all branches that have a package
+            return self.lookup.get_template("package_branches.html").render(
+                package=package,
+                branches=self.repo.branches_with_package(package))
         else:
+            # List the package that's in the branch
             return self.lookup.get_template("package.html").render(
                 branch=branch,
                 package=package,
@@ -37,6 +45,8 @@ if __name__ == '__main__':
     cherrypy.quickstart(application, '/',
                         {
                           "global": {
+                                     "server.socket_host": '0.0.0.0',
+                                     "server.socket_port": 80,
                                      "tools.staticdir.root": directory,
                                     },
                           "/static": {
