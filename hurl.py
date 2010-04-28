@@ -40,8 +40,11 @@ class Hurl(object):
                 pkg=self.repo.get_package_cakefile(branch, package))
 
 if __name__ == '__main__':
-    application = Hurl("testrepo")
-    print(directory)
+    if len(sys.argv) < 2:
+        print("Please specify a hurl repo to serve.")
+        sys.exit(1)
+
+    application = Hurl(sys.argv[1])
     cherrypy.quickstart(application, '/',
                         {
                           "global": {
