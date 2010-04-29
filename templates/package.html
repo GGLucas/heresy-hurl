@@ -72,7 +72,7 @@ Package ${package}/${branch}
   ${pkg["description"] if "description" in pkg else "No description..."}
 </section>
 
-<section>
+<section class="files">
 <h1>Files</h1>
 <ul>
   % for file in files:
@@ -82,4 +82,19 @@ Package ${package}/${branch}
   % endfor
 </ul>
 </section>
+
+<section class="download_source">
+<h1>Download Source</h1>
+<ul>
+  <li>
+    <a href="/source/${package}-${branch}.tar.gz">
+      ${package}-${branch}.tar.gz</a>
+  </li>
+  <li>
+    <a href="/source/${package}-${branch}.tar.bz2">
+      ${package}-${branch}.tar.bz2</a>
+  </li>
+</ul>
+</section>
+
 </%def>
