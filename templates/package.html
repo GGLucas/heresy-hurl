@@ -49,7 +49,11 @@ Package ${package}/${branch}
     <li><strong>Sources</strong>
     <ul class="sourcelist">
      % for source in pkg["sources"]:
-      <li><a href="${source | h}">${source | h}</a></li>
+      % if any(source.startswith(prefix) for prefix in ("http://", "ftp://")):
+        <li><a href="${source | h}">${source | h}</a></li>
+      % else:
+        <li><a href="/package/${package}/${branch}/file/${source | h}">${source | h}</a></li>
+      %endif
      % endfor
     </ul>
     % endif
