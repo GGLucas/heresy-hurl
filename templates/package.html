@@ -11,4 +11,15 @@ Package ${package}/${branch}
 <section>
   ${pkg["description"]}
 </section>
+
+<section>
+<h1>Files</h1>
+<ul>
+  % for file in files:
+  <li>
+    <a href="/${package}/${branch}/${file}">${file}</a>
+  </li>
+  % endfor
+</ul>
+</section>
 </%def>

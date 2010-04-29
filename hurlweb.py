@@ -20,7 +20,7 @@ class Hurl(object):
                 packages=self.repo.get_packages())
 
     @cherrypy.expose
-    def default(self, package, branch=None):
+    def default(self, package, branch=None, rawfile=None):
         if package == "branch":
             # List all packages in a branch
             return self.lookup.get_template("branch.html").render(
@@ -33,11 +33,21 @@ class Hurl(object):
                 package=package,
                 branches=self.repo.branches_with_package(package))
         else:
-            # List the package that's in the branch
-            return self.lookup.get_template("package.html").render(
-                branch=branch,
-                package=package,
-                pkg=self.repo.get_package_cakefile(branch, package))
+            if rawfile is not None:
+                # List the raw cakefile blob
+                if rawfile == "Cakefile" or rawfile.endswith(".patch"):
+                    cherrypy.response.headers['Content-Type'] = 'text/plain'
+                else:
+                    cherrypy.response.headers['Content-Type'] = 'application/octet-stream'
+
+                return str(self.repo.get_package_file(rawfile, branch, package))
+            else:
+                # List the package that's in the branch
+                return self.lookup.get_template("package.html").render(
+                    branch=branch,
+                    package=package,
+                    pkg=self.repo.get_package_cakefile(branch, package),
+                    files=self.repo.get_package_files(branch, package))
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:
@@ -49,7 +59,7 @@ if __name__ == '__main__':
                         {
                           "global": {
                                      "server.socket_host": '0.0.0.0',
-                                     "server.socket_port": 80,
+                                     "server.socket_port": 9000,
                                      "tools.staticdir.root": directory,
                                     },
                           "/static": {

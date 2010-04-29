@@ -121,6 +121,7 @@ class HurlRepo(dulwich.repo.Repo):
         for entry in tree.entries():
             if entry[1] == filename:
                 return self.get_blob(entry[2]).as_raw_string()
+        return None
 
     def get_package_files(self, branch=None, package=None, tree=None):
         """
