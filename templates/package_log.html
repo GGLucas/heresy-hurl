@@ -1,0 +1,30 @@
+<%inherit file="base.html"/>
+<%def name="title()">
+Log ${package}/${branch}
+</%def>
+
+<%def name="content()">
+<header>
+  <h1>Log <a href="/package/${package}/${branch}">${package}/${branch}</a></h1>
+</header>
+
+<section>
+  <h1>Log Entries</h1>
+  <ul class="commits">
+    % for entry in log:
+    <li class="commit">
+      <strong>commit</strong> <span>${entry[0]["tree"] | h}</span>
+      <strong>author</strong> <span>${entry[0]["author"] | h}</span>
+      <strong>date</strong>
+
+      <span>
+        ${entry[0]["date"][0].strftime("%Y %B %d, %A %H:%M") | h}
+        ${entry[0]["date"][1] | h}
+      </span>
+
+      <div class="commitmsg">${entry[1].lstrip() | h}</div>
+    </li>
+    % endfor
+  </ul>
+</section>
+</%def>

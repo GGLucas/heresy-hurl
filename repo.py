@@ -1,3 +1,4 @@
+import datetime
 import dulwich
 import yaml
 
@@ -146,5 +147,65 @@ class HurlRepo(dulwich.repo.Repo):
 
         files = []
         for entry in tree.entries():
-                files.append(entry[1])
+            files.append(entry[1])
         return files
+
+    def get_package_log(self, branch, package=None):
+        try:
+            sha = self.refs["refs/heads/"+branch]
+        except KeyError:
+            return None
+
+        log = []
+
+        for commit in self.revision_history(sha):
+            # Get data
+            lines = commit.as_raw_string().split("\n")
+            message = "\n".join(lines[4:])
+            data = {}
+
+            # Parse data
+            for line in lines[:3]:
+                key, value = line.split(" ", 1)
+                data[key] = value
+
+            # Parse date
+            data["author"] = data["author"].split()
+            data["date"] = data["author"][-2:]
+            data["author"] = " ".join(data["author"][:-2])
+            data["date"][0] = datetime.datetime.fromtimestamp(int(data["date"][0]))
+
+            # Add log entry
+            if package is None:
+                log.append([data, message])
+            else:
+                tree = self.tree(commit.tree)
+                parent_trees = [self.tree(self.commit(par).tree)
+                    for par in commit.get_parents()]
+
+                changed = False
+
+                for elem in tree.entries():
+                    if elem[1] == package:
+                        if not parent_trees:
+                            changed = True
+                            break
+
+                        found = False
+                        for parent in parent_trees:
+                            for parelem in parent.entries():
+                                if parelem[1] == package:
+                                    found = True
+                                    if parelem[2] != elem[2]:
+                                        changed = True
+                                    break
+
+                        if not found:
+                            changed = True
+
+                        break
+
+                if changed:
+                    log.append([data, message])
+
+        return log

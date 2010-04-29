@@ -30,12 +30,25 @@ class Package(object):
                 else:
                     cherrypy.response.headers['Content-Type'] = 'application/octet-stream'
 
-                var = self.repo.get_package_file(argument, branch, package)
-                if var:
-                    return var
+                data = self.repo.get_package_file(argument, branch, package)
+                if data:
+                    return data
                 else:
                     raise cherrypy.HTTPError(404)
-            else:
+
+            elif action == "log" and argument is None:
+                log = self.repo.get_package_log(branch, package)
+                pkg = self.repo.get_package_cakefile(branch, package)
+
+                if pkg is None or log is None:
+                    raise cherrypy.HTTPError(404)
+
+                return self.lookup.get_template("package_log.html").render(
+                    branch=branch,
+                    package=package,
+                    pkg=pkg, log=log[:20])
+
+            elif action is None:
                 pkg = self.repo.get_package_cakefile(branch, package)
                 files = self.repo.get_package_files(branch, package)
 
@@ -47,3 +60,5 @@ class Package(object):
                     branch=branch,
                     package=package,
                     pkg=pkg, files=files)
+            else:
+                raise cherrypy.HTTPError(404)
