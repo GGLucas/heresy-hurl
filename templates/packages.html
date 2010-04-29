@@ -1,6 +1,6 @@
 <%inherit file="base.html"/>
 <%def name="title()">
-Branch ${branch}
+Package List
 </%def>
 
 <%def name="content()">
@@ -9,14 +9,13 @@ Branch ${branch}
 </header>
 
 <section>
-  <h1>Packages in Branch</h1>
+  <h1>Packages in Repo</h1>
   <ul>
-    % for pkg in packages:
+    % for package in packages:
     <li>
-      <a href="/package/${pkg}/${branch}">${pkg}</a>
+      <a href="/package/${package}">${package}</a>
     </li>
     % endfor
   </ul>
-
 </section>
 </%def>

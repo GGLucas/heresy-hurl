@@ -8,14 +8,12 @@ Repository Index
   <h1>${self.title()}</h1>
 </header>
 
-<section>
-  <h1>Packages in Repo</h1>
+<nav>
   <ul>
-    % for package in packages:
-    <li>
-      <a href="/${package}">${package}</a>
-    </li>
-    % endfor
+    <li><a href="/branch/master">Packages in <code>master</code></a></li>
+    <li><a href="/branches">All branches in repo</a></li>
+    <li><a href="/packages">All packages in repo</a></li>
   </ul>
-</section>
+</nav>
+
 </%def>

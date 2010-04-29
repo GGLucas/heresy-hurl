@@ -17,6 +17,10 @@ class HurlRepo(dulwich.repo.Repo):
             if ref.startswith("refs/heads/"):
                 branches.append(ref[11:])
 
+        # Move "master" and "staging" to the top
+        branches.sort(key=lambda br: not (br == "master" or 
+                                   br.startswith("staging")))
+
         return branches
 
     def get_packages(self):

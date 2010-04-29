@@ -1,0 +1,10 @@
+[global]
+server.socket_host = "0.0.0.0"
+server.socket_port = 9000
+
+[/favicon.ico]
+tools.staticfile.on = True
+
+[/static]
+tools.staticdir.on = True
+tools.staticdir.dir = "static"

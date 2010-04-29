@@ -1,4 +1,23 @@
 <%inherit file="base.html"/>
+
+<%def name="display(pkg, name)">
+  % if name in pkg:
+  <li>
+    <strong>${name.capitalize()}</strong>
+
+    % if hasattr(pkg[name], "__iter__"):
+      <ul>
+        % for elem in pkg[name]:
+        <li>${elem}</li>
+        % endfor
+      </ul>
+    % else:
+      <span>${pkg[name]}</span>
+    % endif
+  </li>
+  % endif
+</%def>
+
 <%def name="title()">
 Package ${package}/${branch}
 </%def>
@@ -9,7 +28,48 @@ Package ${package}/${branch}
 </header>
 
 <section>
-  ${pkg["description"]}
+  <ul class="infolist">
+    %if "website" in pkg:
+    <li><strong>Website</strong>
+    <a href="${pkg['website']}">${pkg['website']}</a>
+    % endif
+
+    ${display(pkg, "version")}
+    ${display(pkg, "release")}
+    ${display(pkg, "licenses")}
+    ${display(pkg, "architectures")}
+
+    % if "sources" in pkg:
+    <li><strong>Sources</strong>
+    <ul class="sourcelist">
+     % for source in pkg["sources"]:
+      <li><a href="${source}">${source}</a></li>
+     % endfor
+    </ul>
+    % endif
+
+    % if "dependencies" in pkg:
+    <li><strong>Dependencies</strong>
+    <ul class="deplist">
+     % for dep in pkg["dependencies"]:
+      <li><a href="/package/${dep}">${dep}</a></li>
+     % endfor
+    </ul>
+    % endif
+
+    % if "build-dependencies" in pkg:
+    <li><strong>Build Dependencies</strong>
+    <ul class="builddeplist">
+     % for dep in pkg["build-dependencies"]:
+      <li><a href="/package/${dep}">${dep}</a></li>
+     % endfor
+    </ul>
+    % endif
+  </ul>
+<section>
+
+<section class="description">
+  ${pkg["description"] if "description" in pkg else "No description..."}
 </section>
 
 <section>
@@ -17,7 +77,7 @@ Package ${package}/${branch}
 <ul>
   % for file in files:
   <li>
-    <a href="/${package}/${branch}/${file}">${file}</a>
+    <a href="/package/${package}/${branch}/file/${file}">${file}</a>
   </li>
   % endfor
 </ul>
