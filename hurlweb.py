@@ -65,5 +65,10 @@ if __name__ == '__main__':
                           "/static": {
                                       "tools.staticdir.on": True,
                                       "tools.staticdir.dir": "static"
-                                     }
+                                     },
+                         "/favicon.ico": {
+                                          "tools.staticfile.on": True,
+                                          "tools.staticfile.filename":
+                                             directory+"/static/favicon.ico"
+                                         },
                          })
