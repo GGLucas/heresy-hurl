@@ -67,7 +67,8 @@ class Abs(object):
             pkgroot = os.path.join(absroot, repo, package)
 
             return self.lookup.get_template("abs_package.html").render(
-                repo=repo, package=package, files=os.listdir(pkgroot))
+                repo=repo, package=package, files=os.listdir(pkgroot),
+                available=self.repo.branches_with_package(package))
 
         pkgroot = os.path.join(absroot, repo, package)
         filepath = os.path.join(pkgroot, filename)

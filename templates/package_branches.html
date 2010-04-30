@@ -18,7 +18,7 @@ Package ${package}
   <h1>Branches with Package</h1>
   <ul class="pkglist">
     % for branch in branches:
-    <li>
+    <li class="branch_${branch}">
       <a href="/package/${package}/${branch}">${package}/${branch}</a>
       <a class="dllink" href="/source/${package}-${branch}.tar.gz">
         ${package}-${branch}.tar.gz

@@ -15,6 +15,13 @@ h1 {
     margin: 0;
     padding 0;
 }
+
+section.notice {
+    display: block;
+    padding: 0.1em 0.6em;
+    background: #ccddcc;
+}
+
 body > header > hgroup > h1 {
     font-size: 1.5em;
 }
@@ -143,6 +150,7 @@ a:hover {
 
 .pkglist li {
     clear: both;
+    padding: 0.3em;
 }
 
 .pkglist li .dllink{
@@ -154,4 +162,8 @@ a:hover {
 
 p {
     max-width: 65em;
+}
+
+.pkglist .branch_master {
+    background: #ddeedd;
 }

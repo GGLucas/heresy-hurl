@@ -23,6 +23,15 @@ ABS Package: ${repo}/${package}
 </ul>
 </nav>
 
+% if available:
+<section class="notice">
+<h1>Notice</h1>
+<p>This package is also available in the regular hurl repository.
+<a href="/package/${package}">Check here for a list of branches that have it.</a>
+</p>
+</section>
+% endif
+
 <section>
 <h1>Files</h1>
 <ul class="filelist">

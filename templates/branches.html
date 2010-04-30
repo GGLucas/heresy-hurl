@@ -17,7 +17,7 @@ Branch List
   <h1>Branches in Repo</h1>
   <ul>
     % for branch in branches:
-    <li>
+    <li class="branch_${branch}">
       <a href="/branch/${branch}">${branch}</a>
     </li>
     % endfor
