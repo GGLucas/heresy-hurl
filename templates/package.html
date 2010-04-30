@@ -36,6 +36,9 @@ Package ${package}/${branch}
 <section>
   <ul class="infolist">
     %if "website" in pkg:
+
+    ${display(pkg, "name")}
+
     <li><strong>Website</strong>
     <a href="${pkg['website']}">${pkg['website']}</a>
     % endif
@@ -45,24 +48,16 @@ Package ${package}/${branch}
     ${display(pkg, "licenses")}
     ${display(pkg, "architectures")}
 
-    % if "sources" in pkg:
-    <li><strong>Sources</strong>
-    <ul class="sourcelist">
-     % for source in pkg["sources"]:
-      % if any(source.startswith(prefix) for prefix in ("http://", "ftp://")):
-        <li><a href="${source | h}">${source | h}</a></li>
-      % else:
-        <li><a href="/package/${package}/${branch}/file/${source | h}">${source | h}</a></li>
-      %endif
-     % endfor
-    </ul>
-    % endif
-
     % if "dependencies" in pkg:
     <li><strong>Dependencies</strong>
     <ul class="deplist">
      % for dep in pkg["dependencies"]:
-      <li><a href="/package/${dep | h}">${dep | h}</a></li>
+      % if len(dep) > 1:
+      <li><a href="/package/${dep[0] | h}">${dep[0] | h} ${dep[1] | h}
+      ${dep[2] | h}</a></li>
+      % else:
+      <li><a href="/package/${dep[0] | h}">${dep[0] | h}</a></li>
+      % endif
      % endfor
     </ul>
     % endif
@@ -71,7 +66,12 @@ Package ${package}/${branch}
     <li><strong>Build Dependencies</strong>
     <ul class="builddeplist">
      % for dep in pkg["build-dependencies"]:
-      <li><a href="/package/${dep | h}">${dep | h}</a></li>
+      % if len(dep) > 1:
+      <li><a href="/package/${dep[0] | h}">${dep[0] | h} ${dep[1] | h}
+      ${dep[2] | h}</a></li>
+      % else:
+      <li><a href="/package/${dep[0] | h}">${dep[0] | h}</a></li>
+      % endif
      % endfor
     </ul>
     % endif
@@ -104,6 +104,21 @@ Package ${package}/${branch}
     <a href="/source/${package}-${branch}.tar.bz2">
       ${package}-${branch}.tar.bz2</a>
   </li>
+</ul>
+</section>
+
+<section class="sources">
+<h1>Sources</h1>
+<ul>
+  % if "sources" in pkg:
+   % for source in pkg["sources"]:
+    % if any(source.startswith(prefix) for prefix in ("http://", "ftp://")):
+      <li><a href="${source | h}">${source | h}</a></li>
+    % else:
+      <li><a href="/package/${package}/${branch}/file/${source | h}">${source | h}</a></li>
+    %endif
+   % endfor
+  % endif
 </ul>
 </section>
 

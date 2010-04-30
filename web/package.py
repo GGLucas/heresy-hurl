@@ -1,3 +1,4 @@
+from functools import partial
 import cherrypy
 
 class Package(object):
@@ -54,6 +55,22 @@ class Package(object):
 
                 if pkg is None or files is None:
                     raise cherrypy.HTTPError(404)
+
+                # Parse dependencies and sources
+                if "dependencies" in pkg:
+                    pkg["dependencies"] = map(self.repo.parse_dependency,
+                                              pkg["dependencies"])
+
+                if "build-dependencies" in pkg:
+                    pkg["build-dependencies"] = map(self.repo.parse_dependency,
+                                              pkg["build-dependencies"])
+
+                if "sources" in pkg:
+                    pkg["sources"] = map(
+                        lambda src: self.repo.insert_fields(pkg, src)
+                            if not hasattr(src, "__iter__") else
+                                    self.repo.insert_fields(pkg, src[0]),
+                        pkg["sources"])
 
                 # List the package that's in the branch
                 return self.lookup.get_template("package.html").render(

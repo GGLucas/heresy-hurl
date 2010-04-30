@@ -50,12 +50,18 @@ section.description {
 
 .infolist > li > strong {
     display: block;
-    min-width: 10em;
+    min-width: 14em;
     float: left;
 }
 
 .infolist > li > ul {
-    float: left;
+    float: none;
+    width: 80%;
+    margin-left: 14em;
+    display: block;
+    column-width: 15em;
+    -moz-column-width: 15em;
+    -webkit-column-width: 15em;
     padding-left: 1em;
 }
 
@@ -99,6 +105,11 @@ section.description {
 .commitmsg {
     padding-top: 1em;
     white-space: pre;
+    clear: left;
+}
+
+.sources {
+    display: block;
     clear: left;
 }
 

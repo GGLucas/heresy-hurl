@@ -1,6 +1,7 @@
 import datetime
 import dulwich
 import yaml
+import re
 
 try:
     from yaml import CLoader as Loader
@@ -209,3 +210,25 @@ class HurlRepo(dulwich.repo.Repo):
                     log.append([data, message])
 
         return log
+
+    def parse_dependency(self, dep):
+        """
+            Parse a dependency string into a package, version and operator
+            part.
+        """
+        for opr in (">=", "<=", ">", "<", "="):
+            if opr in dep:
+                dependency = [s.strip() for s in dep.partition(opr)]
+                break
+        else:
+            dependency = [dep]
+
+        return dependency
+
+    def insert_fields(self, pkg, string):
+        """
+            Replace variable fields in a string.
+        """
+        return re.sub(r"\$\{([^}]*)\}", lambda match: 
+         pkg[match.group(1)] if match.group(1) in pkg
+        else "(null)", string)
