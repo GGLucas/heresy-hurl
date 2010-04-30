@@ -116,3 +116,21 @@ section.description {
 a {
     text-decoration: none;
 }
+
+.pkglist {
+    column-width: 20em;
+    -moz-column-width: 20em;
+    -webkit-column-width: 20em;
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.pkglist li {
+    clear: both;
+}
+
+.pkglist li .dllink{
+    float: right;
+    font-size: 65%;
+    color: #aa5555;
+}

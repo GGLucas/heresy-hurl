@@ -1,3 +1,4 @@
+import os
 import tarfile
 import cherrypy
 import time
@@ -25,7 +26,7 @@ class Source(object):
 
             mode = "w:bz2"
         else:
-            return None #TODO: 404
+            raise cherrypy.NotFound()
 
         # Extract package and branch
         items = filename.split("-")

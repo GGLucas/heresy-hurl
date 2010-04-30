@@ -10,10 +10,13 @@ Package ${package}
 
 <section>
   <h1>Branches with Package</h1>
-  <ul>
+  <ul class="pkglist">
     % for branch in branches:
     <li>
-      <a href="/package/${package}/${branch}">${branch}</a>
+      <a href="/package/${package}/${branch}">${package}/${branch}</a>
+      <a class="dllink" href="/source/${package}-${branch}.tar.gz">
+        ${package}-${branch}.tar.gz
+      </a>
     </li>
     % endfor
   </ul>

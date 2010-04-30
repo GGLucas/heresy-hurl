@@ -1,11 +1,11 @@
 <%inherit file="base.html"/>
 <%def name="title()">
-Branch Log ${branch}
+Branch Log: ${branch}
 </%def>
 
 <%def name="content()">
 <header>
-  <h1>Branch Log <a href="/branch/${branch}">${branch}</a></h1>
+  <h1><a href="/branch/${branch}">${branch}</a> Branch Log</h1>
 </header>
 
 <section>

@@ -1,0 +1,36 @@
+<%inherit file="base.html"/>
+<%def name="title()">
+ABS Package: ${repo}/${package}
+</%def>
+
+<%def name="content()">
+<header>
+  <h1>${self.title()}</h1>
+</header>
+
+<nav>
+<ul>
+  <li>
+    <a href="/abs/${repo}/${package}.tar.gz">Download source tarball ${package}.tar.gz</a>
+  </li>
+</ul>
+</nav>
+
+<section>
+<h1>Files</h1>
+<ul class="filelist">
+  <li>
+    <a href="/abs/${repo}/${package}/Cakefile">Cakefile</a>
+  </li>
+
+  % for fl in files:
+    % if fl != "PKGBUILD":
+      <li>
+        <a href="/abs/${repo}/${package}/${fl}">${fl}</a>
+      </li>
+    % endif
+  % endfor
+</ul>
+</section>
+
+</%def>

@@ -1,0 +1,24 @@
+<%inherit file="base.html"/>
+<%def name="title()">
+ABS Packages: ${repo}
+</%def>
+
+<%def name="content()">
+<header>
+  <h1>${self.title()}</h1>
+</header>
+
+<nav>
+<ul class="pkglist">
+  % for pkg in packages:
+    <li>
+      <a href="/abs/${repo}/${pkg}">${pkg}</a>
+      <a class="dllink" href="/abs/${repo}/${pkg}.tar.gz">
+        ${pkg}.tar.gz
+      </a>
+    </li>
+  % endfor
+</ul>
+</nav>
+
+</%def>
