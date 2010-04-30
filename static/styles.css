@@ -28,10 +28,6 @@ body > header > hgroup > h1 > a:not(:first-child) {
     color: #55aa55;
 }
 
-body > header > hgroup > h1 > span {
-    color: black;
-}
-
 h2 {
     font-size: 1em;
     margin: 0;
@@ -133,6 +129,10 @@ a {
     text-decoration: none;
 }
 
+a:hover {
+    text-decoration: underline;
+}
+
 .pkglist {
     column-width: 20em;
     -moz-column-width: 20em;
@@ -149,4 +149,5 @@ a {
     float: right;
     font-size: 65%;
     color: #aa5555;
+    padding-top: 0.g5em;
 }
