@@ -1,4 +1,10 @@
 <%inherit file="base.html"/>
+
+<%def name="crumbs()">
+ &middot; <a href="/branches">branches</a>
+ &middot; <span>${branch}</span>
+</%def>
+
 <%def name="title()">
 Branch ${branch}
 </%def>

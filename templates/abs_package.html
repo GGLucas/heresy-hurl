@@ -1,4 +1,11 @@
 <%inherit file="base.html"/>
+
+<%def name="crumbs()">
+ &middot; <a href="/abs">abs</a>
+ &middot; <a href="/abs/${repo}">${repo}</a>
+ &middot; <span>${package}</span>
+</%def>
+
 <%def name="title()">
 ABS Package: ${repo}/${package}
 </%def>

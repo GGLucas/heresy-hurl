@@ -15,6 +15,22 @@ h1 {
     margin: 0;
     padding 0;
 }
+body > header > hgroup > h1 {
+    font-size: 1.5em;
+}
+
+body > header > hgroup > h1 > a:first-child {
+    font-size: 1.8em;
+    color: #ee5555;
+}
+
+body > header > hgroup > h1 > a:not(:first-child) {
+    color: #55aa55;
+}
+
+body > header > hgroup > h1 > span {
+    color: black;
+}
 
 h2 {
     font-size: 1em;

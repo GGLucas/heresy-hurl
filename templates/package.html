@@ -1,5 +1,11 @@
 <%inherit file="base.html"/>
 
+<%def name="crumbs()">
+ &middot; <a href="/packages">packages</a>
+ &middot; <a href="/package/${package}">${package}</a>
+ &middot; <span>${branch}</span>
+</%def>
+
 <%def name="display(pkg, name)">
   % if name in pkg:
   <li>
@@ -24,7 +30,7 @@ Package ${package}/${branch}
 
 <%def name="content()">
 <header>
-  <h1>Package <a href="/package/${package}">${package}</a>/<a href="/branch/${branch}">${branch}</a></h1>
+  <h1>Package ${package}/${branch}</h1>
 </header>
 
 <nav>
