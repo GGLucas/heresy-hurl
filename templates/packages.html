@@ -17,7 +17,7 @@ Package List
   <h1>Packages in Repo</h1>
   <ul class="pkglist">
     % for package in packages:
-    <li>
+    <li class="${"branch_master" if package in in_master else ""}">
       <a href="/package/${package}">${package}</a>
     </li>
     % endfor

@@ -10,8 +10,12 @@ class Root(object):
 
     @cherrypy.expose
     def packages(self):
+        in_master = {}
+        for pkg in self.repo.packages_in_branch("master"):
+            in_master[pkg] = True
+
         return self.lookup.get_template("packages.html").render(
-            packages=self.repo.get_packages())
+            packages=self.repo.get_packages(), in_master=in_master)
 
     @cherrypy.expose
     def branches(self):
