@@ -149,5 +149,9 @@ a:hover {
     float: right;
     font-size: 65%;
     color: #aa5555;
-    padding-top: 0.g5em;
+    padding-top: 0.25em;
+}
+
+p {
+    max-width: 65em;
 }
