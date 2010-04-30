@@ -8,9 +8,6 @@ server.socket_port = 9000
 [/]
 tools.gzip.on = True
 
-[/favicon.ico]
-tools.staticfile.on = True
-
 [/static]
 tools.staticdir.on = True
 tools.staticdir.dir = "static"
