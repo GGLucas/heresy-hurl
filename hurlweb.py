@@ -2,6 +2,7 @@
 import sys
 import os
 import cherrypy
+import datetime
 
 from mako.template import Template
 from mako.lookup import TemplateLookup
@@ -63,6 +64,7 @@ if HAVE_ARCH2CAKE:
 # Search
 if HAVE_XAPIAN:
     index = searchrepo.HurlIndex(cherrypy.config["hurl"]["index"])
+    index.LOADED = datetime.datetime.now()
     cherrypy.tree.mount(Search(repo, lookup, index), "/search", confpath)
 
 # WSGI Application

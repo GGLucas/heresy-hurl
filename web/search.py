@@ -1,3 +1,4 @@
+import datetime
 import cherrypy
 
 class Search(object):
@@ -9,6 +10,11 @@ class Search(object):
         if q is None:
             raise cherrypy.NotFound()
 
+        # Check if index should be updated
+        if datetime.datetime.now()-self.index.LOADED > datetime.timedelta(minutes=30):
+            self.index.reopen()
+
+        # Search
         results, num, exact = self.index.search(q)
 
         return self.lookup.get_template("search.html").render(
