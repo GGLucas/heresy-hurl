@@ -1,3 +1,4 @@
+#!/usr/bin/python -u
 """
     Module for scanning and indexing a repository
     into a xapian database.
@@ -81,6 +82,13 @@ if __name__ == '__main__':
 
             if branch == "create":
                 create_index(db)
+            elif branch == "listen":
+                while 1:
+                    line = sys.stdin.readline()
+
+                    if line.strip():
+                        pkg, branch = map(str.strip, line.split("/", 1))
+                        db.replace(indexpackage(repo, branch, pkg))
             else:
                 for pkg in scanbranch(repo, branch):
                     db.replace(pkg)
@@ -88,6 +96,6 @@ if __name__ == '__main__':
             branch = sys.argv[3]
 
             for pkg in sys.argv[4:]:
-                db.replace(indexpackage(pkg))
+                db.replace(indexpackage(repo, branch, pkg))
     finally:
         db.close()
