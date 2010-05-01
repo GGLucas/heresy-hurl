@@ -1,0 +1,64 @@
+<%inherit file="base.html"/>
+
+<%def name="stats()">
+  ${'' if exact else "about"} <span>${num}</span> packages found
+</%def>
+
+<%def name="searchvalue()">${query}</%def>
+
+<%def name="crumbs()">
+ &middot; <span>search</span>
+</%def>
+
+<%def name="title()">
+Search: ${query}
+</%def>
+
+<%def name="content()">
+<header>
+  <h1>${self.title()}</h1>
+</header>
+
+<em>${'' if exact else "about"} ${num} packages found</em>
+
+% for pkg in results:
+<div class="search_result">
+  <%
+    package = pkg["package"][0]
+    branch = pkg["branch"][0]
+    description = pkg["description"][0]
+
+    if len(description) > 80:
+      description = pkg["description"][0][:80]+"..."
+
+    if "tags" in pkg:
+      tags = pkg["tags"][0].split()
+  %>
+
+  <nav>
+    <a class="dllink" href="/source/${package}-${branch}.tar.gz">
+      ${package}-${branch}.tar.gz</a>
+
+    <a class="brlink" href="/package/${package}">
+      branches with this package</a>
+  </nav>
+
+  <h2><a href="/package/${package | h}/${branch | h}">
+    ${package | h}/${branch | h}</a></h2>
+
+  <ul class="tags">
+  % if "tags" in pkg:
+    % for i, tag in enumerate(tags):
+      <li><a href="/search/?q=tags:${tag}">
+        ${tag | h}${", " if i < len(tags)-1 else ''}
+      </a></li>
+    % endfor
+  % endif
+  </ul>
+
+  <p>${description | h}</p>
+
+</div>
+% endfor
+
+</%def>

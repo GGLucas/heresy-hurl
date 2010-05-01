@@ -13,8 +13,9 @@
 </div>
 % endif
 
-<form method="post" action="/search/">
-  <input class="search" type="text" name="search" placeholder="search repository">
+<form method="get" action="/search/">
+  <input class="search" type="text" name="q" placeholder="search repository"
+   value="${self.searchvalue() if hasattr(self, "searchvalue") else ''}">
 </form>
 </header>
 

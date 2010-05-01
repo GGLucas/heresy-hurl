@@ -18,6 +18,17 @@ from web.package import Package
 from web.root import Root
 from web.source import Source
 
+# Check if we have xapian
+try:
+    import searchrepo
+    HAVE_XAPIAN = True
+except ImportError:
+    HAVE_XAPIAN = False
+
+if HAVE_XAPIAN:
+    from web.search import Search
+
+# Check if we have auto-conversion
 try:
     import arch2cake
     HAVE_ARCH2CAKE = True
@@ -45,9 +56,14 @@ cherrypy.tree.mount(Package(repo, lookup), "/package", confpath)
 cherrypy.tree.mount(Branch(repo, lookup), "/branch", confpath)
 cherrypy.tree.mount(Source(repo, lookup), "/source", confpath)
 
-# Autoconverted
+# Autoconverted packages
 if HAVE_ARCH2CAKE:
     cherrypy.tree.mount(Abs(repo, lookup), "/abs", confpath)
+
+# Search
+if HAVE_XAPIAN:
+    index = searchrepo.HurlIndex(cherrypy.config["hurl"]["index"])
+    cherrypy.tree.mount(Search(repo, lookup, index), "/search", confpath)
 
 # WSGI Application
 application = cherrypy.tree

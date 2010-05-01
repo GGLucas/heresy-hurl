@@ -1,5 +1,6 @@
 [hurl]
 repo = "/var/hurl"
+index = "/var/hurl-index"
 
 [arch]
 absroot = "/var/abs"
