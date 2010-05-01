@@ -49,9 +49,15 @@ class Abs(object):
             if ".." in repo:
                 raise cherrypy.NotFound()
 
+            # Get hurl-available packages
+            in_hurl = {}
+            for pkg in self.repo.get_packages():
+                in_hurl[pkg] = True
+
             if os.path.exists(reporoot):
                 return self.lookup.get_template("abs_packages.html").render(
-                    repo=repo, packages=os.listdir(reporoot))
+                    repo=repo, packages=os.listdir(reporoot),
+                    in_hurl=in_hurl)
             else:
                 raise CherryPy.NotFound()
 

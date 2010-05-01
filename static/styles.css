@@ -1,5 +1,5 @@
 html {
-    font-family: sans-serif;
+    font-family: "DejaVu Sans", sans-serif;
     font-size: 0.9em;
     padding: 0 1em;
     margin: 0 10%;
@@ -58,7 +58,8 @@ h1 {
 section.notice {
     display: block;
     padding: 0.1em 0.6em;
-    background: #ccddcc;
+    background: #e6fae6;
+    border: 1px solid #448844;
 }
 
 body > header > h1 {
@@ -198,6 +199,8 @@ a:hover {
 .pkglist li {
     clear: both;
     padding: 0.3em;
+    border: 1px solid #888888;
+    margin: 4px 0;
 }
 
 .pkglist li .dllink{
@@ -207,10 +210,16 @@ a:hover {
     padding-top: 0.25em;
 }
 
-p {
-    max-width: 65em;
+.pkglist .branch_master {
+    background: #e6fae6;
+    border: 1px solid #448844;
 }
 
-.pkglist .branch_master {
-    background: #ddeedd;
+.pkglist .in_hurl {
+    background: #f0f0f0;
+    border: 1px solid #aaa;
+}
+
+p {
+    max-width: 65em;
 }
