@@ -1,15 +1,21 @@
 html {
     font-family: "DejaVu Sans", sans-serif;
     font-size: 0.9em;
-    padding: 0 1em;
-    margin: 0 10%;
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    padding: 0;
+    margin: 0;
 }
 
 body > header {
     display: block;
-    padding-bottom: 0.5em;
-    padding-left: 2px;
     border-bottom: 2px solid #ddd;
+    padding: 0.5em 10%;
+    margin: 0;
+    background: #fafafa;
 }
 
 body > header div.stats {
@@ -28,6 +34,11 @@ body > header div.stats span {
 
 body > header div.stats span:first-child {
     color: #55aa55;
+}
+
+body > section {
+    padding: 0 10%;
+    display: block;
 }
 
 nav ul:not(.pkglist) {
@@ -60,6 +71,7 @@ input.search {
     border: 1px solid #bfbfbf;
     outline: 0;
     background: url("/static/search.png") no-repeat 5px 5px;
+    background-color: white;
     height: 16px;
     padding: 4px;
     padding-left: 25px;
