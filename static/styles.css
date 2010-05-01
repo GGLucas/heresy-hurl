@@ -45,9 +45,9 @@ nav ul:not(.pkglist) li {
 }
 
 nav:not(.main) ul:not(.pkglist) {
-    column-width: 22em;
-    -moz-column-width: 22em;
-    -webkit-column-width: 22em;
+    column-width: 20em;
+    -moz-column-width: 20em;
+    -webkit-column-width: 20em;
 }
 
 nav:not(.main) ul:not(.pkglist) li {

@@ -1,5 +1,9 @@
 <%inherit file="base.html"/>
 
+<%def name="stats()">
+  repository contains <span>${len(branches)}</span> branches
+</%def>
+
 <%def name="crumbs()">
  &middot; <span>branches</span>
 </%def>
@@ -13,7 +17,7 @@ Branch List
   <h1>${self.title()}</h1>
 </header>
 
-<nav>
+<nav class="main">
   <h1>Branches in Repo</h1>
   <ul>
     % for branch in branches:

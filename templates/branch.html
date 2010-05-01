@@ -1,5 +1,9 @@
 <%inherit file="base.html"/>
 
+<%def name="stats()">
+  branch ${branch} contains <span>${len(packages)}</span> packages
+</%def>
+
 <%def name="crumbs()">
  &middot; <a href="/branches">branches</a>
  &middot; <span>${branch}</span>

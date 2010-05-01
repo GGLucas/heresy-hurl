@@ -1,5 +1,9 @@
 <%inherit file="base.html"/>
 
+<%def name="stats()">
+  repository contains <span>${len(packages)}</span> packages
+</%def>
+
 <%def name="crumbs()">
  &middot; <span>packages</span>
 </%def>

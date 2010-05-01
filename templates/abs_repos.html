@@ -1,5 +1,9 @@
 <%inherit file="base.html"/>
 
+<%def name="stats()">
+  abs contains <span>${len(repositories)}</span> repositories
+</%def>
+
 <%def name="crumbs()">
  &middot; <span>abs</span>
 </%def>
@@ -18,7 +22,7 @@ perfect; PKGBUILDS making abundant use of bash features in their field
 definitions will not be converted correctly.</p><p><em>Always check the
 Cakefile first before attempting to build an autoconverted package.</em></p>
 
-<nav>
+<nav class="main">
 <ul>
   % for repo in repositories:
     <li><a href="/abs/${repo}">${repo}</a></li>

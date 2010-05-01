@@ -1,7 +1,8 @@
 <%inherit file="base.html"/>
 
 <%def name="stats()">
-  repository contains <span>${numpackages}</span> packages in <span>${numbranches}</span> branches
+  repository contains <span>${numpackages}</span>
+  packages in <span>${numbranches}</span> branches
 </%def>
 
 <%def name="title()">
@@ -16,8 +17,8 @@ Repository Index
 <nav class="main">
   <ul>
     <li><a href="/branch/master">Packages in <code>master</code></a></li>
-    <li><a href="/branches">All branches in repo</a></li>
     <li><a href="/packages">All packages in repo</a></li>
+    <li><a href="/branches">All branches in repo</a></li>
   </ul>
 
   <ul>
