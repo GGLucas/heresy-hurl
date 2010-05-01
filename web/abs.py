@@ -17,14 +17,17 @@ except ImportError:
 
 def getcakefile(path):
     # Converted cakefile
-    fd = open(path, "r")
-    data = arch2cake(fd)
-    build = data["build"].split("\n")
-    del data["build"]
-    fd.close()
+    try:
+        fd = open(path, "r")
+        data = arch2cake(fd)
+        build = data["build"].split("\n")
+        del data["build"]
+        fd.close()
 
-    return yaml.dump(data, Dumper=Dumper, default_flow_style=False) + \
-           "build: |\n" + "  " + varrep("\n  ".join(build[:-1])) + "\n"
+        return yaml.dump(data, Dumper=Dumper, default_flow_style=False) + \
+               "build: |\n" + "  " + varrep("\n  ".join(build[:-1])) + "\n"
+    except:
+        return "An error occurred during PKGBUILD to Cakefile conversion."
 
 class Abs(object):
     def __init__(self, repo, lookup):

@@ -30,6 +30,32 @@ body > header div.stats span:first-child {
     color: #55aa55;
 }
 
+nav ul:not(.pkglist) {
+    list-style-position: inside;
+    list-style-type: square;
+    padding-left: 6px;
+}
+
+nav ul:not(.pkglist) li {
+    border: 1px solid #aaa;
+    padding: 0.3em;
+    margin: 4px 0;
+    padding-left: 1em;
+    width: 30em;
+}
+
+nav:not(.main) ul:not(.pkglist) {
+    column-width: 22em;
+    -moz-column-width: 22em;
+    -webkit-column-width: 22em;
+}
+
+nav:not(.main) ul:not(.pkglist) li {
+    font-size: 85%;
+    background-color: #f6f6f6;
+    width: 20em;
+}
+
 input.search {
     border: 1px solid #bfbfbf;
     outline: 0;
