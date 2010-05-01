@@ -5,6 +5,15 @@ html {
     margin: 0;
 }
 
+a {
+    color: #000066;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
 body {
     padding: 0;
     margin: 0;
@@ -55,14 +64,15 @@ nav ul:not(.pkglist) li {
     width: 30em;
 }
 
-nav:not(.main) ul:not(.pkglist) {
-    column-width: 20em;
-    -moz-column-width: 20em;
+nav:not(.main) ul:not(.pkglist) li {
+    font-size: 80%;
+    padding-top: 0.6em;
+    padding-bottom: 0.6em;
+    background-color: #f6f6f6;
 }
 
-nav:not(.main) ul:not(.pkglist) li {
-    font-size: 85%;
-    background-color: #f6f6f6;
+nav:not(.main) ul:not(.pkglist) li a {
+    color: black;
 }
 
 input.search {
@@ -213,14 +223,6 @@ section.description {
 .sources {
     display: block;
     clear: left;
-}
-
-a {
-    text-decoration: none;
-}
-
-a:hover {
-    text-decoration: underline;
 }
 
 .pkglist {
