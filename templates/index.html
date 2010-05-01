@@ -1,4 +1,9 @@
 <%inherit file="base.html"/>
+
+<%def name="stats()">
+  repository contains <span>${numpackages}</span> packages in <span>${numbranches}</span> branches
+</%def>
+
 <%def name="title()">
 Repository Index
 </%def>

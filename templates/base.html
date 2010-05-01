@@ -5,10 +5,17 @@
 <link rel="icon" href="/static/favicon.ico">
 
 <header>
-<hgroup>
-<h1><a href="/">hurl</a>${self.crumbs() if hasattr(self, "crumbs") else ""}</h1>
-<h2>heresy package repository</h2>
-</hgroup>
+<h1><a href="/">hurl</a>${self.crumbs() if hasattr(self, "crumbs") else " &middot; heresy package repository"}</h1>
+
+% if hasattr(self, "stats"):
+<div class="stats">
+  ${self.stats()}
+</div>
+% endif
+
+<form method="post" action="/search/">
+  <input class="search" type="text" name="search" placeholder="search repository">
+</form>
 </header>
 
 

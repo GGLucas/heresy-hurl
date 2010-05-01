@@ -8,7 +8,46 @@ html {
 body > header {
     display: block;
     padding-bottom: 0.5em;
+    padding-left: 2px;
     border-bottom: 2px solid #ddd;
+}
+
+body > header div.stats {
+    float: right;
+    padding-top: 1em;
+    padding-right: 2px;
+    font-size: 75%;
+    color: #666;
+}
+
+body > header div.stats span {
+    font-weight: bold;
+    font-size: 130%;
+    color: #aa5555;
+}
+
+body > header div.stats span:first-child {
+    color: #55aa55;
+}
+
+input.search {
+    border: 1px solid #bfbfbf;
+    outline: 0;
+    background: url("/static/search.png") no-repeat 5px 5px;
+    height: 16px;
+    padding: 4px;
+    padding-left: 25px;
+    width: 40em;
+    border-radius: 10px;
+
+    -moz-appearance: none;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+}
+
+input.search:focus {
+    outline: 0;
+    border-color: #8f8f8f;
 }
 
 h1 {
@@ -22,16 +61,16 @@ section.notice {
     background: #ccddcc;
 }
 
-body > header > hgroup > h1 {
+body > header > h1 {
     font-size: 1.5em;
 }
 
-body > header > hgroup > h1 > a:first-child {
+body > header > h1 > a:first-child {
     font-size: 1.8em;
     color: #ee5555;
 }
 
-body > header > hgroup > h1 > a:not(:first-child) {
+body > header > h1 > a:not(:first-child) {
     color: #55aa55;
 }
 
@@ -98,6 +137,9 @@ section.description {
 .commit {
     min-height: 5em;
     padding: 0.5em;
+    margin: 0.6em;
+    border: 1px solid #bfbfbf;
+    font-size: 85%;
 }
 
 .commit strong {
@@ -118,13 +160,18 @@ section.description {
 }
 
 .commit:nth-child(odd) {
-    background: #eaeaea;
+    background: #fafafa;
 }
 
 .commitmsg {
     padding-top: 1em;
     white-space: pre;
     clear: left;
+    color: #666;
+}
+
+.commitmsg:first-line {
+    color: black;
 }
 
 .sources {

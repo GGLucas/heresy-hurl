@@ -6,7 +6,9 @@ class Root(object):
 
     @cherrypy.expose
     def index(self):
-        return self.lookup.get_template("index.html").render()
+        return self.lookup.get_template("index.html").render(
+            numpackages=len(self.repo.get_packages()),
+            numbranches=len(self.repo.get_branches()))
 
     @cherrypy.expose
     def packages(self):
