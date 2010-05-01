@@ -58,13 +58,11 @@ nav ul:not(.pkglist) li {
 nav:not(.main) ul:not(.pkglist) {
     column-width: 20em;
     -moz-column-width: 20em;
-    -webkit-column-width: 20em;
 }
 
 nav:not(.main) ul:not(.pkglist) li {
     font-size: 85%;
     background-color: #f6f6f6;
-    width: 20em;
 }
 
 input.search {
@@ -158,7 +156,6 @@ section.description {
     display: block;
     column-width: 15em;
     -moz-column-width: 15em;
-    -webkit-column-width: 15em;
     padding-left: 1em;
 }
 
@@ -229,7 +226,6 @@ a:hover {
 .pkglist {
     column-width: 20em;
     -moz-column-width: 20em;
-    -webkit-column-width: 20em;
     list-style-type: none;
     padding-left: 0;
 }
