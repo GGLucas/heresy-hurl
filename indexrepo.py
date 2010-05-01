@@ -1,4 +1,4 @@
-#!/usr/bin/python -u
+#!/usr/bin/python
 """
     Module for scanning and indexing a repository
     into a xapian database.
@@ -83,8 +83,11 @@ if __name__ == '__main__':
             if branch == "create":
                 create_index(db)
             elif branch == "listen":
-                while 1:
-                    line = sys.stdin.readline()
+                from posix_ipc import MessageQueue, O_CREAT
+                queue = MessageQueue("/hurl-index", flags=O_CREAT)
+
+                while True:
+                    line, prior = queue.receive()
 
                     if line.strip():
                         pkg, branch = map(str.strip, line.split("/", 1))
