@@ -92,6 +92,7 @@ if __name__ == '__main__':
                     if line.strip():
                         pkg, branch = map(str.strip, line.split("/", 1))
                         db.replace(indexpackage(repo, branch, pkg))
+                        db.flush()
             else:
                 for pkg in scanbranch(repo, branch):
                     db.replace(pkg)
