@@ -62,9 +62,9 @@ if HAVE_ARCH2CAKE:
     cherrypy.tree.mount(Abs(repo, lookup), "/abs", confpath)
 
 # Search
-if HAVE_XAPIAN:
-    index = searchrepo.HurlIndex(cherrypy.config["hurl"]["index"])
-    index.LOADED = datetime.datetime.now()
+if HAVE_XAPIAN and "index" in cherrypy.config["hurl"]:
+    index = searchrepo.HurlIndex(cherrypy.config["hurl"]["index"],
+                         cherrypy.config["hurl"].get("index.expire", 30))
     cherrypy.tree.mount(Search(repo, lookup, index), "/search", confpath)
 
 # WSGI Application
