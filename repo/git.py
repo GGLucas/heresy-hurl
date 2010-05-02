@@ -78,7 +78,7 @@ class HurlGitRepo(dulwich.repo.Repo):
             Get all packages in a certain branch.
         """
         try:
-            sha = self.refs["refs/heads/"+branch]
+            sha = self.get_refs()["refs/heads/"+branch]
         except KeyError:
             return None
 
@@ -104,7 +104,7 @@ class HurlGitRepo(dulwich.repo.Repo):
             Get the tree of files under a certain package in a branch.
         """
         try:
-            sha = self.refs["refs/heads/"+branch]
+            sha = self.get_refs()["refs/heads/"+branch]
         except KeyError:
             return None
 
@@ -165,7 +165,7 @@ class HurlGitRepo(dulwich.repo.Repo):
 
     def get_package_log(self, branch, package=None):
         try:
-            sha = self.refs["refs/heads/"+branch]
+            sha = self.get_refs()["refs/heads/"+branch]
         except KeyError:
             return None
 
