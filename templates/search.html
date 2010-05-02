@@ -24,15 +24,15 @@ Search: ${query}
 % for pkg in results:
 <div class="search_result">
   <%
-    package = pkg["package"][0]
-    branch = pkg["branch"][0]
-    description = pkg["description"][0]
+    package = pkg["package"]
+    branch = pkg["branch"]
+    description = pkg["description"]
 
     if len(description) > 80:
-      description = pkg["description"][0][:80]+"..."
+      description = pkg["description"][:80]+"..."
 
     if "tags" in pkg:
-      tags = pkg["tags"][0].split()
+      tags = pkg["tags"].split()
   %>
 
   <nav>

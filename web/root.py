@@ -1,14 +1,15 @@
 import cherrypy
 
 class Root(object):
-    def __init__(self, repo, lookup):
-        self.repo, self.lookup = repo, lookup
+    def __init__(self, repo, lookup, index=None):
+        self.repo, self.lookup, self._index = repo, lookup, index
 
     @cherrypy.expose
     def index(self):
         return self.lookup.get_template("index.html").render(
-            numpackages=len(self.repo.get_packages()),
-            numbranches=len(self.repo.get_branches()))
+            numpackages=self._index.count() if self._index is not None else
+                        len(self.repo.get_packages()),
+            numbranches=self.repo.count_branches())
 
     @cherrypy.expose
     def packages(self):

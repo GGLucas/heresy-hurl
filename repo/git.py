@@ -8,7 +8,7 @@ try:
 except ImportError:
     from yaml import Loader
 
-class HurlRepo(dulwich.repo.Repo):
+class HurlGitRepo(dulwich.repo.Repo):
     def get_branches(self):
         """
             Get all branches in the entire repo.
@@ -24,6 +24,18 @@ class HurlRepo(dulwich.repo.Repo):
                                    br.startswith("staging")))
 
         return branches
+
+    def count_branches(self):
+        """
+            Count the amount of branches in the repo.
+        """
+        count = 0
+
+        for ref in self.get_refs():
+            if ref.startswith("refs/heads/"):
+                count += 1
+
+        return count
 
     def get_packages(self):
         """
