@@ -17,6 +17,7 @@ from repo.git import HurlGitRepo
 from web.branch import Branch
 from web.package import Package
 from web.root import Root
+from web.sync import Sync
 from web.source import Source
 
 # Check if we have xapian
@@ -61,6 +62,7 @@ if HAVE_XAPIAN and "index" in cherrypy.config["hurl"]:
 cherrypy.tree.mount(Root(repo, lookup, index), "/", confpath)
 cherrypy.tree.mount(Package(repo, lookup), "/package", confpath)
 cherrypy.tree.mount(Branch(repo, lookup), "/branch", confpath)
+cherrypy.tree.mount(Sync(repo, lookup), "/sync", confpath)
 cherrypy.tree.mount(Source(repo, lookup), "/source", confpath)
 
 # Autoconverted packages

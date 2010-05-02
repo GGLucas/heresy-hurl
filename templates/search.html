@@ -30,9 +30,6 @@ Search: ${query}
 
     if len(description) > 80:
       description = pkg["description"][:80]+"..."
-
-    if "tags" in pkg:
-      tags = pkg["tags"].split()
   %>
 
   <nav>
@@ -48,9 +45,9 @@ Search: ${query}
 
   <ul class="tags">
   % if "tags" in pkg:
-    % for i, tag in enumerate(tags):
+    % for i, tag in enumerate(pkg["tags"]):
       <li><a href="/search/?q=tags:${tag}">
-        ${tag | h}${", " if i < len(tags)-1 else ''}
+        ${tag | h}${", " if i < len(pkg["tags"])-1 else ''}
       </a></li>
     % endfor
   % endif

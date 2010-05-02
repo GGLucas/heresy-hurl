@@ -163,7 +163,40 @@ class HurlGitRepo(dulwich.repo.Repo):
             files.append(entry[1])
         return files
 
+    def get_latest_versions(self, packages):
+        """
+            Get information about all packages from the list
+            that were updated from their specified versions.
+        """
+        # TODO: We really need to implement some sort of caching here,
+        # parsing all these cakefiles is ridiculous.
+        updated = []
+        for package, branch, version in packages:
+            cakefile = self.get_package_cakefile(branch, package)
+
+            # Check existence
+            if cakefile is None:
+                continue
+
+            # Check version
+            ver = str(cakefile["version"])+"-"+str(cakefile["release"])
+            if ver != str(version):
+                # List of dependencies
+                deps = [] if "dependencies" not in cakefile else \
+                       cakefile["dependencies"]
+
+                # List of conflicting packages
+                conflicts = [] if "conflicts" not in cakefile else \
+                            cakefile["conflicts"]
+
+                updated.append([package, branch, ver, deps, conflicts])
+        return updated
+
     def get_package_log(self, branch, package=None):
+        """
+            Get log entries for a branch or a package in
+            a branch.
+        """
         try:
             sha = self.get_refs()["refs/heads/"+branch]
         except KeyError:
@@ -179,7 +212,6 @@ class HurlGitRepo(dulwich.repo.Repo):
             # Parse data
             line = lines.pop(0)
             while line:
-                print(line)
                 key, value = line.split(" ", 1)
                 data[key] = value
                 line = lines.pop(0)
@@ -200,8 +232,6 @@ class HurlGitRepo(dulwich.repo.Repo):
                 data["date"] = data["author"][-2:]
                 data["author"] = " ".join(data["author"][:-2])
                 data["date"][0] = datetime.datetime.fromtimestamp(int(data["date"][0]))
-
-            print(data)
 
             # Add log entry
             if package is None:

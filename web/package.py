@@ -1,5 +1,6 @@
 from functools import partial
 import cherrypy
+import json
 
 class Package(object):
     def __init__(self, repo, lookup):
@@ -48,6 +49,11 @@ class Package(object):
                     branch=branch,
                     package=package,
                     pkg=pkg, log=log[:20])
+
+            elif action == ".json" and argument is None:
+                pkg = self.repo.get_package_cakefile(branch, package)
+                pkg["files"] = self.repo.get_package_files(branch, package)
+                return json.dumps(pkg)
 
             elif action is None:
                 pkg = self.repo.get_package_cakefile(branch, package)

@@ -82,10 +82,21 @@ class HurlXapianIndex(object):
         results = self.conn.search(q, 0, 10, collapse="package")
 
         # Sanitise results
-        result_data = (dict((key, value[0]) for key, value in doc.data.items())
-                                        for doc in results)
+        def iter_docs():
+            for doc in results:
+                data = doc.data
 
-        return result_data, results.matches_estimated, results.estimate_is_exact
+                # Use only the first data entry
+                for item in data:
+                    data[item] = data[item][0]
+
+                # Split up tags
+                if "tags" in data:
+                    data["tags"] = data["tags"].split()
+
+                yield data
+
+        return iter_docs(), results.matches_estimated, results.estimate_is_exact
 
     def count(self):
         """
