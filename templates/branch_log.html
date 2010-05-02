@@ -20,7 +20,7 @@ Branch Log: ${branch}
   <ul class="commits">
     % for entry in log:
     <li class="commit">
-      <strong>commit</strong> <span>${entry[0]["tree"] | h}</span>
+      <strong>commit</strong> <span>${entry[0]["commit"] | h}</span>
       <strong>author</strong> <span>${entry[0]["author"] | h}</span>
       <strong>date</strong>
 

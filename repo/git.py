@@ -174,19 +174,34 @@ class HurlGitRepo(dulwich.repo.Repo):
         for commit in self.revision_history(sha):
             # Get data
             lines = commit.as_raw_string().split("\n")
-            message = "\n".join(lines[4:])
             data = {}
 
             # Parse data
-            for line in lines[:3]:
+            line = lines.pop(0)
+            while line:
+                print(line)
                 key, value = line.split(" ", 1)
                 data[key] = value
+                line = lines.pop(0)
+
+            message = "\n".join(lines)
+
+            # Fall back to committer
+            if "committer" in data and "author" not in data:
+                data["author"] = data["committer"]
+
+            # Get commit
+            if "commit" not in data:
+                data["commit"] = commit.id
 
             # Parse date
-            data["author"] = data["author"].split()
-            data["date"] = data["author"][-2:]
-            data["author"] = " ".join(data["author"][:-2])
-            data["date"][0] = datetime.datetime.fromtimestamp(int(data["date"][0]))
+            if "author" in data:
+                data["author"] = data["author"].split()
+                data["date"] = data["author"][-2:]
+                data["author"] = " ".join(data["author"][:-2])
+                data["date"][0] = datetime.datetime.fromtimestamp(int(data["date"][0]))
+
+            print(data)
 
             # Add log entry
             if package is None:
