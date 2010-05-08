@@ -94,11 +94,6 @@ class HurlXapianIndex(object):
                 if "tags" in data:
                     data["tags"] = data["tags"].split()
 
-                # Use raw values
-                data["package"] = data["Rpackage"]
-                data["branch"] = data["Rbranch"]
-                data["user"] = data["Ruser"]
-
                 yield data
 
         return iter_docs(), results.matches_estimated, results.estimate_is_exact
@@ -126,15 +121,13 @@ class HurlXapianIndex(object):
         self._connect_write()
 
         # Name fields
-        for field in "package", "Rpackage":
+        for field in "branch", "user", "package":
             self.db.add_field_action(field, xappy.FieldActions.STORE_CONTENT)
-            self.db.add_field_action(field, xappy.FieldActions.INDEX_EXACT)
-            self.db.add_field_action(field, xappy.FieldActions.COLLAPSE)
+            self.db.add_field_action(field, xappy.FieldActions.INDEX_FREETEXT,
+                search_by_default=False)
 
-        for field in "branch", "Rbranch", "user", "Ruser":
-            self.db.add_field_action(field, xappy.FieldActions.STORE_CONTENT)
-            self.db.add_field_action(field, xappy.FieldActions.INDEX_EXACT)
-
+        # Collapsable on package name
+        self.db.add_field_action("package", xappy.FieldActions.COLLAPSE)
 
         # Priority field
         self.db.add_field_action("priority", xappy.FieldActions.STORE_CONTENT)
@@ -177,15 +170,13 @@ class HurlXapianIndex(object):
 
         # Fill document
         doc = xappy.UnprocessedDocument()
-        doc.fields.append(xappy.Field("Rpackage", package))
-        doc.fields.append(xappy.Field("Rbranch", branch))
-        doc.fields.append(xappy.Field("Ruser", branch.split("/")[0]))
-
-        doc.fields.append(xappy.Field("package", package.lower()))
-        doc.fields.append(xappy.Field("branch", branch.lower()))
-        doc.fields.append(xappy.Field("user", branch.split("/")[0].lower()))
+        doc.fields.append(xappy.Field("package", package))
+        doc.fields.append(xappy.Field("branch", branch))
+        doc.fields.append(xappy.Field("user", branch.split("/")[0]))
         doc.fields.append(xappy.Field("priority", str(int(branch == "master"))))
         doc.id = branch+"/"+package
+
+        print(branch.lower())
 
         # Add fields
         for field in FIELDS:
