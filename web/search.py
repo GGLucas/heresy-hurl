@@ -18,7 +18,7 @@ class Search(object):
             results=results, num=num, exact=exact, query=q)
 
     @cherrypy.expose(".json")
-    def json(self, q=None):
+    def json(self, q, protocol):
         # Search
         results, num, exact = self.index.search(q)
 

@@ -20,7 +20,7 @@ Branch ${branch}
 
 <nav>
 <ul>
-  <li><a href="/branch/${branch}/log">Branch Changelog</a></li>
+  <li><a href="/branch-log/${branch}">Branch Changelog</a></li>
 </ul>
 </nav>
 
@@ -29,9 +29,9 @@ Branch ${branch}
   <ul class="pkglist">
     % for pkg in packages:
     <li>
-      <a href="/package/${pkg}/${branch}">${pkg}/${branch}</a>
-      <a class="dllink" href="/source/${pkg}-${branch}.tar.gz">
-        ${pkg}-${branch}.tar.gz
+      <a href="/package/${branch}/${pkg}">${pkg}</a>
+      <a class="dllink" href="/source/${branch}/${branch.replace("/", "-")}-${pkg}.tar.gz"
+         title="${branch.replace("/", "-")}-${pkg}.tar.gz">tar.gz
       </a>
     </li>
     % endfor

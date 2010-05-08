@@ -171,7 +171,7 @@ class HurlGitRepo(dulwich.repo.Repo):
         # TODO: We really need to implement some sort of caching here,
         # parsing all these cakefiles is ridiculous.
         updated = []
-        for package, branch, version in packages:
+        for branch, package, version in packages:
             cakefile = self.get_package_cakefile(branch, package)
 
             # Check existence
@@ -189,7 +189,12 @@ class HurlGitRepo(dulwich.repo.Repo):
                 conflicts = [] if "conflicts" not in cakefile else \
                             cakefile["conflicts"]
 
-                updated.append([package, branch, ver, deps, conflicts])
+                updated.append({
+                    "package": package,
+                    "branch": branch,
+                    "version": ver,
+                    "dependencies": deps,
+                    "conflicts": conflicts})
         return updated
 
     def get_package_log(self, branch, package=None):

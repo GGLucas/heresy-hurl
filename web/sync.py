@@ -6,9 +6,9 @@ class Sync(object):
         self.repo, self.lookup = repo, lookup
 
     @cherrypy.expose(".json")
-    def json(self, pkgs):
+    def json(self):
         try:
-            packages = json.loads(pkgs)
+            packages = json.load(cherrypy.request.body)
             return json.dumps(self.repo.get_latest_versions(packages))
         except:
             return "['An error has occurred.']"

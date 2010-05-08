@@ -27,21 +27,22 @@ Search: ${query}
     package = pkg["package"]
     branch = pkg["branch"]
     description = pkg["description"]
+    ident = branch.replace("/", "-")+"-"+package
 
     if len(description) > 80:
       description = pkg["description"][:80]+"..."
   %>
 
   <nav>
-    <a class="dllink" href="/source/${package}-${branch}.tar.gz">
-      ${package}-${branch}.tar.gz</a>
+    <a class="dllink" href="/source/${branch}/${ident}.tar.gz">
+      ${ident}.tar.gz</a>
 
     <a class="brlink" href="/package/${package}">
       branches with this package</a>
   </nav>
 
-  <h2><a href="/package/${package | h}/${branch | h}">
-    ${package | h}/${branch | h}</a></h2>
+  <h2><a href="/package/${branch | h}/${package | h}">
+    ${branch | h}/<span>${package | h}</span></a></h2>
 
   <ul class="tags">
   % if "tags" in pkg:

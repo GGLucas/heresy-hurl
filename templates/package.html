@@ -2,8 +2,8 @@
 
 <%def name="crumbs()">
  &middot; <a href="/packages">packages</a>
- &middot; <a href="/package/${package}">${package}</a>
- &middot; <span>${branch}</span>
+ &middot; <a href="/branch/${branch}">${branch}</a>
+ &middot; <span>${package}</span>
 </%def>
 
 <%def name="display(pkg, name)">
@@ -25,17 +25,17 @@
 </%def>
 
 <%def name="title()">
-Package ${package}/${branch}
+Package ${branch}/${package}
 </%def>
 
 <%def name="content()">
 <header>
-  <h1>Package ${package}/${branch}</h1>
+  <h1>${self.title()}</h1>
 </header>
 
 <nav>
 <ul>
-  <li><a href="/package/${package}/${branch}/log">Package Changelog</a></li>
+  <li><a href="/package-log/${branch}/${package}">Package Changelog</a></li>
 </ul>
 </nav>
 
@@ -59,10 +59,10 @@ Package ${package}/${branch}
     <ul class="deplist">
      % for dep in pkg["dependencies"]:
       % if len(dep) > 1:
-      <li><a href="/package/${dep[0] | h}">${dep[0] | h} ${dep[1] | h}
+      <li><a href="/packages/${dep[0] | h}">${dep[0] | h} ${dep[1] | h}
       ${dep[2] | h}</a></li>
       % else:
-      <li><a href="/package/${dep[0] | h}">${dep[0] | h}</a></li>
+      <li><a href="/packages/${dep[0] | h}">${dep[0] | h}</a></li>
       % endif
      % endfor
     </ul>
@@ -73,10 +73,10 @@ Package ${package}/${branch}
     <ul class="builddeplist">
      % for dep in pkg["build-dependencies"]:
       % if len(dep) > 1:
-      <li><a href="/package/${dep[0] | h}">${dep[0] | h} ${dep[1] | h}
+      <li><a href="/packages/${dep[0] | h}">${dep[0] | h} ${dep[1] | h}
       ${dep[2] | h}</a></li>
       % else:
-      <li><a href="/package/${dep[0] | h}">${dep[0] | h}</a></li>
+      <li><a href="/packages/${dep[0] | h}">${dep[0] | h}</a></li>
       % endif
      % endfor
     </ul>
@@ -93,7 +93,7 @@ Package ${package}/${branch}
 <ul>
   % for file in files:
   <li>
-    <a href="/package/${package}/${branch}/file/${file | h}">${file | h}</a>
+    <a href="/package-file/${branch}/${package}/${file | h}">${file | h}</a>
   </li>
   % endfor
 </ul>
@@ -102,13 +102,14 @@ Package ${package}/${branch}
 <section class="download_source">
 <h1>Download Source</h1>
 <ul>
+  <% ident = branch.replace("/", "-")+"-"+package %>
   <li>
-    <a href="/source/${package}-${branch}.tar.gz">
-      ${package}-${branch}.tar.gz</a>
+    <a href="/source/${branch}/${ident}.tar.gz">
+      ${ident}.tar.gz</a>
   </li>
   <li>
-    <a href="/source/${package}-${branch}.tar.bz2">
-      ${package}-${branch}.tar.bz2</a>
+    <a href="/source/${branch}/${ident}.tar.bz2">
+      ${ident}.tar.bz2</a>
   </li>
 </ul>
 </section>
@@ -121,7 +122,7 @@ Package ${package}/${branch}
     % if any(source.startswith(prefix) for prefix in ("http://", "ftp://")):
       <li><a href="${source | h}">${source | h}</a></li>
     % else:
-      <li><a href="/package/${package}/${branch}/file/${source | h}">${source | h}</a></li>
+      <li><a href="/package-file/${branch}/${package}/${source | h}">${source | h}</a></li>
     %endif
    % endfor
   % endif

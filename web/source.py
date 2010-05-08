@@ -13,7 +13,19 @@ class Source(object):
         self.repo, self.lookup = repo, lookup
 
     @cherrypy.expose
-    def default(self, filename):
+    def default(self, *ident):
+        if len(ident) < 2:
+            raise cherrypy.NotFound()
+
+        filename = ident[-1]
+        branch = "/".join(ident[:-1])
+        brident = branch.replace("/", "-")
+
+        if not filename.startswith(brident):
+            raise cherrypy.NotFound()
+
+        package, _ = filename[len(brident)+1:].rsplit(".tar.", 1)
+
         # Extract archive type
         if filename.endswith(".tar.gz"):
             cherrypy.response.headers['Content-Type'] \
@@ -28,15 +40,13 @@ class Source(object):
         else:
             raise cherrypy.NotFound()
 
-        # Extract package and branch
-        items = filename.split("-")
-        branch = items.pop().split(".tar.")[0]
-        package = "-".join(items)
-
         # Create tar archive
         content = StringIO.StringIO()
         tarf = tarfile.open(fileobj=content, mode=mode)
         tree = self.repo.get_package_tree(branch, package)
+
+        if tree is None:
+            raise cherrypy.NotFound()
 
         for i, filename, ident in tree.entries():
             blob = self.repo.get_blob(ident).as_raw_string()
@@ -46,7 +56,8 @@ class Source(object):
             string.write(blob)
             string.seek(0)
 
-            info = tarfile.TarInfo(name=os.path.join(package+"-"+branch, filename))
+            info = tarfile.TarInfo(name=os.path.join(
+                brident+"-"+package, filename))
             info.size = length
             info.mtime = time.time()
 

@@ -317,3 +317,7 @@ p {
     font-size: 80%;
     margin-top: 0.5em;
 }
+
+.search_result a span {
+    color: #ee5555;
+}

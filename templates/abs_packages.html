@@ -23,8 +23,8 @@ ABS Packages: ${repo}
   % for pkg in packages:
     <li class="${"in_hurl" if pkg in in_hurl else ""}">
       <a href="/abs/${repo}/${pkg}">${pkg}</a>
-      <a class="dllink" href="/abs/${repo}/${pkg}.tar.gz">
-        ${pkg}.tar.gz
+      <a class="dllink" href="/abs/${repo}/${pkg}.tar.gz"
+        title="${pkg}.tar.gz">tar.gz
       </a>
     </li>
   % endfor

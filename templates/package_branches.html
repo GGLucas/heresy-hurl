@@ -23,9 +23,10 @@ Package ${package}
   <ul class="pkglist">
     % for branch in branches:
     <li class="branch_${branch}">
-      <a href="/package/${package}/${branch}">${package}/${branch}</a>
-      <a class="dllink" href="/source/${package}-${branch}.tar.gz">
-        ${package}-${branch}.tar.gz
+      <a href="/package/${branch}/${package}">${branch}/${package}</a>
+      <a class="dllink" href="/source/${branch}/${branch.replace("/", "-")}-${package}.tar.gz"
+        title="${branch.replace("/", "-")}-${package}.tar.gz">
+        tar.gz
       </a>
     </li>
     % endfor

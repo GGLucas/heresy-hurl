@@ -79,7 +79,7 @@ class HurlXapianIndex(object):
 
         # Run query
         q = self.conn.query_parse(terms, default_op=self.conn.OP_AND)
-        results = self.conn.search(q, 0, 10, collapse="package")
+        results = self.conn.search(q, 0, 10, sortby="-priority", collapse="package")
 
         # Sanitise results
         def iter_docs():
@@ -93,6 +93,11 @@ class HurlXapianIndex(object):
                 # Split up tags
                 if "tags" in data:
                     data["tags"] = data["tags"].split()
+
+                # Use raw values
+                data["package"] = data["Rpackage"]
+                data["branch"] = data["Rbranch"]
+                data["user"] = data["Ruser"]
 
                 yield data
 
@@ -121,12 +126,21 @@ class HurlXapianIndex(object):
         self._connect_write()
 
         # Name fields
-        self.db.add_field_action("package", xappy.FieldActions.STORE_CONTENT)
-        self.db.add_field_action("package", xappy.FieldActions.INDEX_EXACT)
-        self.db.add_field_action("package", xappy.FieldActions.COLLAPSE)
+        for field in "package", "Rpackage":
+            self.db.add_field_action(field, xappy.FieldActions.STORE_CONTENT)
+            self.db.add_field_action(field, xappy.FieldActions.INDEX_EXACT)
+            self.db.add_field_action(field, xappy.FieldActions.COLLAPSE)
 
-        self.db.add_field_action("branch", xappy.FieldActions.STORE_CONTENT)
-        self.db.add_field_action("branch", xappy.FieldActions.INDEX_EXACT)
+        for field in "branch", "Rbranch", "user", "Ruser":
+            self.db.add_field_action(field, xappy.FieldActions.STORE_CONTENT)
+            self.db.add_field_action(field, xappy.FieldActions.INDEX_EXACT)
+
+
+        # Priority field
+        self.db.add_field_action("priority", xappy.FieldActions.STORE_CONTENT)
+        self.db.add_field_action("priority", xappy.FieldActions.INDEX_EXACT)
+        self.db.add_field_action("priority", xappy.FieldActions.SORTABLE,
+                                 type='float')
 
         # Other fields
         for field, actions in FIELDS.items():
@@ -163,8 +177,14 @@ class HurlXapianIndex(object):
 
         # Fill document
         doc = xappy.UnprocessedDocument()
-        doc.fields.append(xappy.Field("package", package))
-        doc.fields.append(xappy.Field("branch", branch))
+        doc.fields.append(xappy.Field("Rpackage", package))
+        doc.fields.append(xappy.Field("Rbranch", branch))
+        doc.fields.append(xappy.Field("Ruser", branch.split("/")[0]))
+
+        doc.fields.append(xappy.Field("package", package.lower()))
+        doc.fields.append(xappy.Field("branch", branch.lower()))
+        doc.fields.append(xappy.Field("user", branch.split("/")[0].lower()))
+        doc.fields.append(xappy.Field("priority", str(int(branch == "master"))))
         doc.id = branch+"/"+package
 
         # Add fields
@@ -194,7 +214,7 @@ def listen(index, repo, queue_name="/hurl-index"):
 
         if line.strip():
             if "/" in line:
-                package, branch = map(str.strip, line.split("/", 1))
+                branch, package = map(str.strip, line.rsplit("/", 1))
                 index.index_package(repo, branch, package)
                 index.flush()
             else:

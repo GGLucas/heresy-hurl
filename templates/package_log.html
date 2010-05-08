@@ -2,8 +2,8 @@
 
 <%def name="crumbs()">
  &middot; <a href="/packages">packages</a>
- &middot; <a href="/package/${package}">${package}</a>
- &middot; <a href="/package/${package}/${branch}">${branch}</a>
+ &middot; <a href="/branch/${branch}">${branch}</a>
+ &middot; <a href="/package/${branch}/${package}">${package}</a>
  &middot; <span>log</span>
 </%def>
 
@@ -13,7 +13,7 @@ Log ${package}/${branch}
 
 <%def name="content()">
 <header>
-  <h1><a href="/package/${package}/${branch}">${package}/${branch}</a> Changelog</h1>
+  <h1><a href="/package/${branch}/${package}">${branch}/${package}</a> Changelog</h1>
 </header>
 
 <section>
