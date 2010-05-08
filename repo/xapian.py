@@ -176,7 +176,8 @@ class HurlXapianIndex(object):
         doc.fields.append(xappy.Field("priority", str(int(branch == "master"))))
         doc.id = branch+"/"+package
 
-        print(branch.lower())
+        # Debug message
+        print("(Re)Indexing "+doc.id)
 
         # Add fields
         for field in FIELDS:

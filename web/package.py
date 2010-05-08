@@ -38,11 +38,8 @@ class Package(object):
                                           pkg["build-dependencies"])
 
             if "sources" in pkg:
-                pkg["sources"] = map(
-                    lambda src: self.repo.insert_fields(pkg, src)
-                        if not hasattr(src, "__iter__") else
-                                self.repo.insert_fields(pkg, src[0]),
-                    pkg["sources"])
+                pkg["sources"] = map(self.repo.parse_source,
+                                        pkg["sources"])
 
             # List the package that's in the branch
             return self.lookup.get_template("package.html").render(

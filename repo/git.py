@@ -294,3 +294,19 @@ class HurlGitRepo(dulwich.repo.Repo):
         return re.sub(r"\$\{([^}]*)\}", lambda match: 
          pkg[match.group(1)] if match.group(1) in pkg
         else "(null)", string)
+
+    def parse_source(self, source):
+        external = ("http://", "ftp://")
+
+        if isinstance(source, list):
+            external = any(source[0].startswith(src) for src in external)
+            return [source[0], external, source[0]]
+        elif isinstance(source, dict):
+            if "git" in source:
+                name = source["git"]
+                if "branch" in source:
+                    name += " branch "+source["branch"]
+                return [name, True, ""]
+        else:
+            external = any(source.startswith(src) for src in external)
+            return [source, external, source]

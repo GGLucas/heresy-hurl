@@ -114,19 +114,23 @@ Package ${branch}/${package}
 </ul>
 </section>
 
+% if "sources" in pkg:
 <section class="sources">
 <h1>Sources</h1>
 <ul>
-  % if "sources" in pkg:
    % for source in pkg["sources"]:
-    % if any(source.startswith(prefix) for prefix in ("http://", "ftp://")):
-      <li><a href="${source | h}">${source | h}</a></li>
+    % if source[1]:
+      % if source[2]:
+        <li><a href="${source[2] | h}">${source[0] | h}</a></li>
+      % else:
+        <li>${source[0] | h}</li>
+      % endif
     % else:
-      <li><a href="/package-file/${branch}/${package}/${source | h}">${source | h}</a></li>
+      <li><a href="/package-file/${branch}/${package}/${source[2] | h}">${source[0] | h}</a></li>
     %endif
    % endfor
-  % endif
 </ul>
 </section>
+% endif
 
 </%def>
