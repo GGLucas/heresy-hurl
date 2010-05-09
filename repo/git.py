@@ -295,10 +295,12 @@ class HurlGitRepo(dulwich.repo.Repo):
          pkg[match.group(1)] if match.group(1) in pkg
         else "(null)", string)
 
-    def parse_source(self, source):
+    def parse_source(self, source, pkg=None):
         external = ("http://", "ftp://")
 
         if isinstance(source, list):
+            if pkg is not None:
+                source[0] = self.insert_fields(pkg, source[0])
             external = any(source[0].startswith(src) for src in external)
             return [source[0], external, source[0]]
         elif isinstance(source, dict):
@@ -308,5 +310,7 @@ class HurlGitRepo(dulwich.repo.Repo):
                     name += " branch "+source["branch"]
                 return [name, True, ""]
         else:
+            if pkg is not None:
+                source = self.insert_fields(pkg, source)
             external = any(source.startswith(src) for src in external)
             return [source, external, source]

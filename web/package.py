@@ -38,8 +38,8 @@ class Package(object):
                                           pkg["build-dependencies"])
 
             if "sources" in pkg:
-                pkg["sources"] = map(self.repo.parse_source,
-                                        pkg["sources"])
+                pkg["sources"] = [self.repo.parse_source(source, pkg=pkg)
+                                        for source in pkg["sources"]]
 
             # List the package that's in the branch
             return self.lookup.get_template("package.html").render(
