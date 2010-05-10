@@ -17,7 +17,7 @@ from repo.git import HurlGitRepo
 from web.branch import Branch, BranchLog
 from web.package import Package, PackageLog, PackageFile
 from web.root import Root
-from web.sync import Sync
+from web.api import API
 from web.source import Source
 
 # Check if we have xapian
@@ -51,6 +51,7 @@ cherrypy.config.update(confpath)
 # Initialise repo and templates
 repo = HurlGitRepo(cherrypy.config["hurl"]["repo"])
 lookup = TemplateLookup(directories=[os.path.join(directory, "templates")])
+access = None
 index = None
 
 # Initialise index
@@ -68,8 +69,8 @@ cherrypy.tree.mount(PackageFile(repo, lookup), "/package-file", confpath)
 cherrypy.tree.mount(Branch(repo, lookup), "/branch", confpath)
 cherrypy.tree.mount(BranchLog(repo, lookup), "/branch-log", confpath)
 
-cherrypy.tree.mount(Sync(repo, lookup), "/sync", confpath)
 cherrypy.tree.mount(Source(repo, lookup), "/source", confpath)
+cherrypy.tree.mount(API(repo, lookup, index, access), "/api", confpath)
 
 # Autoconverted packages
 if HAVE_ARCH2CAKE:

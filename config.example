@@ -1,6 +1,8 @@
 [hurl]
 repo = "/var/hurl"
 index = "/var/hurl-index"
+userdb = "/var/hurl/userdb"
+gitolite.conf = "/home/git/.gitolite/conf/gitolite.conf"
 
 [arch]
 absroot = "/var/abs"

@@ -1,11 +1,12 @@
 import cherrypy
+import json
 
 class Package(object):
     def __init__(self, repo, lookup):
         self.repo, self.lookup = repo, lookup
 
     @cherrypy.expose
-    def default(self, *ident):
+    def default(self, *ident, **kwargs):
         if len(ident) == 1:
             # We only have a package name,
             # list all branches that have it
@@ -13,7 +14,7 @@ class Package(object):
             branches = self.repo.branches_with_package(package)
 
             if not branches:
-                raise cherrypy.HTTPError(404)
+                raise cherrypy.NotFound()
 
             return self.lookup.get_template("package_branches.html").render(
                 package=package, branches=branches)
@@ -27,6 +28,13 @@ class Package(object):
 
             if pkg is None or files is None:
                 raise cherrypy.NotFound()
+
+            if "json" in kwargs and kwargs["json"] == "1":
+                # List info in json format
+                if "text" not in kwargs or kwargs["text"] != "1":
+                    cherrypy.response.headers['Content-Type'] = \
+                        'application/json'
+                return json.dumps(pkg)
 
             # Parse dependencies and sources
             if "dependencies" in pkg:
