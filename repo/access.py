@@ -125,13 +125,14 @@ class SSHKeys(object):
                 lines = list(source.readlines())
 
             with open(self.authkeys_file, "w") as target:
-                line = lines.pop(0)
-                while line:
-                    if line == search_for:
-                        lines.pop(0)
-                    else:
-                        target.write(line)
+                if lines:
                     line = lines.pop(0)
+                    while lines and line:
+                        if line == search_for:
+                            lines.pop(0)
+                        else:
+                            target.write(line)
+                        line = lines.pop(0)
 
 
 class HurlUser(object):
