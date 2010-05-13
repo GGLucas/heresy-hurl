@@ -55,7 +55,7 @@ class HurlAccess(object):
         if ind:
             return ind[0]
         else:
-            num = max(user.keys.keys())+1
+            num = max(user.keys.keys())+1 if user.keys else 0
             user.keys[num] = pubkey
 
             self.keydb.add(user.username, num, pubkey)
