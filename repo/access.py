@@ -131,7 +131,7 @@ class SSHKeys(object):
                         lines.pop(0)
                     else:
                         target.write(line)
-                    lines.pop(0)
+                    line = lines.pop(0)
 
 
 class HurlUser(object):
