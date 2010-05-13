@@ -14,6 +14,7 @@ sys.path.append(directory)
 
 # Imports relative to current dir
 from repo.git import HurlGitRepo
+from repo.access import HurlAccess
 from web.branch import Branch, BranchLog
 from web.package import Package, PackageLog, PackageFile
 from web.root import Root
@@ -51,7 +52,9 @@ cherrypy.config.update(confpath)
 # Initialise repo and templates
 repo = HurlGitRepo(cherrypy.config["hurl"]["repo"])
 lookup = TemplateLookup(directories=[os.path.join(directory, "templates")])
-access = None
+access = HurlAccess(cherrypy.config["hurl"]["userdb"],
+                    cherrypy.config["hurl"]["commentdb"],
+                    cherrypy.config["hurl"]["authkeys"])
 index = None
 
 # Initialise index

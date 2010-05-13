@@ -2,7 +2,8 @@
 repo = "/var/hurl"
 index = "/var/hurl-index"
 userdb = "/var/hurl/userdb"
-gitolite.conf = "/home/git/.gitolite/conf/gitolite.conf"
+commentdb = "/var/hurl/commentdb"
+authkeys = "/home/hurl/.ssh/authorized_keys"
 
 [arch]
 absroot = "/var/abs"
