@@ -111,7 +111,8 @@ class SSHKeys(object):
                          ("""#hurl:%s:%d\n""" % (username, num)) +
                          ("""command="env HURLUSER=%s git shell",""" % username) +
                           """no-port-forwarding,no-X11-forwarding,""" +
-                          """no-agent-forwarding,no-pty """ + key + "\n")
+                          """no-agent-forwarding,no-pty """ + 
+                          key.replace("\n", "") + "\n")
 
     def remove(self, username, num):
         """
