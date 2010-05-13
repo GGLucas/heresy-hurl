@@ -129,10 +129,13 @@ class SSHKeys(object):
                     line = lines.pop(0)
                     while lines and line:
                         if line == search_for:
-                            lines.pop(0)
+                            if lines:
+                                lines.pop(0)
                         else:
                             target.write(line)
-                        line = lines.pop(0)
+
+                        if lines:
+                            line = lines.pop(0)
 
 
 class HurlUser(object):
