@@ -109,7 +109,7 @@ class SSHKeys(object):
             with open(self.authkeys_file, "a") as fd:
                 fd.write(
                          ("""#hurl:%s:%d\n""" % (username, num)) +
-                         ("""command="env HURLUSER=%s git shell",""" % username) +
+                         ("""command="env HURLUSER=%s git-locked",""" % username) +
                           """no-port-forwarding,no-X11-forwarding,""" +
                           """no-agent-forwarding,no-pty """ + 
                           key.replace("\n", "") + "\n")
