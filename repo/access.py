@@ -122,15 +122,16 @@ class SSHKeys(object):
 
         with SSH_LOCK:
             with open(self.authkeys_file, "r") as source:
-                with open(self.authkeys_file+".temp", "w") as target:
-                    line = source.readline()
-                    while line:
-                        if line == search_for:
-                            source.readline()
-                        else:
-                            target.write(line)
-                        line = source.readline()
-            os.rename(self.authkeys_file+".temp", self.authkeys_file)
+                lines = list(source.readlines())
+
+            with open(self.authkeys_file, "w") as target:
+                line = lines.pop(0)
+                while line:
+                    if line == search_for:
+                        lines.pop(0)
+                    else:
+                        target.write(line)
+                    lines.pop(0)
 
 
 class HurlUser(object):
