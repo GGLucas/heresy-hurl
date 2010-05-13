@@ -8,6 +8,7 @@ class API(object):
     def __init__(self, repo, lookup, index, access):
         self.repo, self.lookup, self.index, self.access = \
             repo, lookup, index, access
+
     @cherrypy.expose
     def version(self):
         return str(PROTOCOL_VER)
@@ -67,7 +68,7 @@ class API(object):
             return "['An error has occurred.']"
 
     @cherrypy.expose
-    def add_key(self):
+    def addkey(self):
         try:
             request = json.load(cherrypy.request.body)
             data = request["data"]
@@ -83,7 +84,7 @@ class API(object):
             return "['An error has occurred.']"
 
     @cherrypy.expose
-    def remove_key(self):
+    def removekey(self):
         try:
             request = json.load(cherrypy.request.body)
             data = request["data"]
@@ -99,7 +100,7 @@ class API(object):
             return "['An error has occurred.']"
 
     @cherrypy.expose
-    def list_keys(self):
+    def listkeys(self):
         try:
             request = json.load(cherrypy.request.body)
             data = request["data"]
@@ -115,7 +116,7 @@ class API(object):
             return "['An error has occurred.']"
 
     @cherrypy.expose
-    def change_password(self):
+    def changepassword(self):
         try:
             request = json.load(cherrypy.request.body)
             data = request["data"]
