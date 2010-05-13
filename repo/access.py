@@ -125,11 +125,9 @@ class SSHKeys(object):
                 with open(self.authkeys_file+".temp", "w") as target:
                     line = source.readline()
                     while line:
-                        print(repr(line))
                         if line == search_for:
                             source.readline()
                         else:
-                            print("w")
                             target.write(line)
                         line = source.readline()
             os.rename(self.authkeys_file+".temp", self.authkeys_file)
