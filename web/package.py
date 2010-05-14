@@ -37,7 +37,8 @@ class Package(object):
 
             if HAVE_MARKDOWN:
                 readme = self.repo.get_package_readme(branch, package)
-                readme = self.md.convert(readme)
+                if readme:
+                    readme = self.md.convert(readme)
 
             if pkg is None or files is None:
                 raise cherrypy.NotFound()

@@ -23,7 +23,8 @@ class Branch(object):
 
         if HAVE_MARKDOWN:
             readme = self.repo.get_branch_readme(branch)
-            readme = self.md.convert(readme)
+            if readme:
+                readme = self.md.convert(readme)
 
         if packages is None:
             raise cherrypy.HTTPError(404)
