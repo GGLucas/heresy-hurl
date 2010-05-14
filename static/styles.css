@@ -321,3 +321,9 @@ p {
 .search_result a span {
     color: #ee5555;
 }
+
+nav.guides, nav.main {
+    margin-right: 4em;
+    display: block;
+    float: left;
+}

@@ -1,0 +1,108 @@
+<%inherit file="base.html"/>
+
+<%def name="title()">
+User Guide
+</%def>
+
+<%def name="content()">
+<header>
+  <h1>${self.title()}</h1>
+</header>
+
+<section>
+<h1>About hurl</h1>
+<p>Hurl is a community-based repository for cake package build scripts (called
+<a href="#">"Cakefiles"</a>).
+The repository is split up into branches, where each user can
+control their own set of branches. Each branch holds any number of possibly
+related packages, and the hurl interface makes searching and browsing through
+them as easy as cake.</p>
+
+<p>The philosophy behind the hurl system is that any user can take it upon
+themselves to submit, fix or modify any package in the repository, and
+users can easily decide which one is best. This gets rid of problems such
+as orphaned packages or lazy maintainers. Though that last one probably not so
+much.</p>
+
+<p>In order to make collaboration extra-easy hurl's backend is powered by a <a
+href="http://git-scm.com/">git</a> repository. Each user has their own folder
+of branches, which makes merging changes back and forth a breeze.<p>
+
+<p>If you feel like participating in our community, read the rest of this
+guide in order to set up your very own space.</p>
+</section>
+
+<section>
+<h1>Requirements</h1>
+<p>Before we begin, you will at least need to have git and the hurl client
+binary.</p>
+<p>You can get the latter by <a
+href="http://localhost:8080/package/hurl">getting the package</a> or cloning
+the latest git version:</p>
+<code>$ git clone git://git.glacicle.org/heresy/hurlclient</code>
+
+<p>The hurl script used in the rest of the guide will then be in the newly
+created hurlclient directory.<p>
+</section>
+
+<section>
+<h1>Registering Your Key</h1>
+<p>In order for hurl to know who you are, you will need to create an account
+and register your public key to it. That way, you can access the git
+repository and create your own branch.<p>
+
+<p>To sign up, use:</p>
+<code>$ hurl register MYUSERNAME</code>
+
+<p>You can add a new public key by using "addkey":</p>
+<code>$ hurl addkey -u MYUSERNAME ~/.ssh/id_rsa.pub</code>
+
+<p>After that you're all set to create your first branch!<p>
+</section>
+
+<section>
+<h1>Creating Your First Branch</h1>
+<p>You'll want to set up a new git repository in order to pull things from
+hurl, for example:<p>
+<code>
+$ git init hurl<br>
+$ cd git<br>
+$ git remote add origin git@hereticlinux.org:hurl
+</code>
+
+<p>Because git branches are always based on a reference point, you'll want to
+at least pull the stub EMPTY tag to base your branch on.</p>
+<code>
+$ git pull origin tags/EMPTY:tags/EMPTY
+</code>
+
+<p>Now we can create and checkout your new branch.<p>
+<code>
+$ git branch MYUSERNAME/default EMPTY<br>
+$ git checkout MYUSERNAME/default
+</code>
+
+<p>You can now add packages (see the next section) or push your empty branch
+to hurl and see it appear in the list of branches. To do this, use:</p>
+<code>
+$ git push origin MYUSERNAME/default
+</code>
+
+<p>Note that "default" here is just a convention, you can use any branch name
+as long as it is contained in your username's folder.<p>
+</section>
+
+<section>
+<h1>Adding Packages</h1>
+<p>Adding packages is simple, just create a new directory named after your
+package, then add a <a href="#">Cakefile</a> and any other local sources you
+need to that folder. Committing the folder to git and then pushing your branch
+will make it instantly available on the hurl web interface.<p>
+<p>An important thing to remember is that to make cherry-picking changes from
+users easier, commits are limited to modifying a single package at once. Any
+commits you make that modify multiple packages will be rejected when you try
+to push. You can easily commit just a single folder by doing:<p>
+<code>$ git commit MYPACKAGE</code>
+</section>
+
+</%def>

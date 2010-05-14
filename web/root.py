@@ -24,3 +24,7 @@ class Root(object):
     def branches(self):
         return self.lookup.get_template("branches.html").render(
             branches=self.repo.get_branches())
+
+    @cherrypy.expose
+    def guide(self):
+        return self.lookup.get_template("guide.html").render()

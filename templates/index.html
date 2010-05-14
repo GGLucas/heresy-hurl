@@ -10,11 +10,9 @@ Repository Index
 </%def>
 
 <%def name="content()">
-<header>
-  <h1>${self.title()}</h1>
-</header>
-
 <nav class="main">
+  <h1>${self.title()}</h1>
+
   <ul>
     <li><a href="/branch/master">Packages in <code>master</code></a></li>
     <li><a href="/packages">All packages in repo</a></li>
@@ -24,6 +22,12 @@ Repository Index
   <ul>
     <li><a href="/abs">Automatically converted ABS packages</a></li>
   </ul>
+</nav>
+
+<nav class="guides">
+  <h1>User Guide</h1>
+  <p>Want to participate and add your own packages or fix up existing ones?</p>
+  <p>Read the <a href="/guide">User Guide</a> to see how.</p>
 </nav>
 
 </%def>
