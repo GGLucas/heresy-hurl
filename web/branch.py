@@ -1,8 +1,16 @@
 import cherrypy
 
+try:
+    import markdown
+    HAVE_MARKDOWN = True
+except ImportError:
+    HAVE_MARKDOWN = False
+
 class Branch(object):
     def __init__(self, repo, lookup):
         self.repo, self.lookup = repo, lookup
+        self.md = markdown.Markdown(safe_mode="escape",
+            output_format="html")
 
     @cherrypy.expose
     def default(self, *branch):
@@ -11,12 +19,17 @@ class Branch(object):
         """
         branch = "/".join(branch)
         packages = self.repo.packages_in_branch(branch)
+        readme = None
+
+        if HAVE_MARKDOWN:
+            readme = self.repo.get_branch_readme(branch)
+            readme = self.md.convert(readme)
 
         if packages is None:
             raise cherrypy.HTTPError(404)
 
         return self.lookup.get_template("branch.html").render(
-            branch=branch, packages=packages)
+            branch=branch, packages=packages, readme=readme)
 
 
 class BranchLog(object):

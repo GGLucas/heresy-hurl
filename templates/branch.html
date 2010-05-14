@@ -24,6 +24,12 @@ Branch ${branch}
 </ul>
 </nav>
 
+% if readme:
+<section>
+  ${readme}
+</section>
+% endif
+
 <section>
   <h1>Packages</h1>
   <ul class="pkglist">

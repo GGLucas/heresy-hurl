@@ -81,6 +81,30 @@ Package ${branch}/${package}
      % endfor
     </ul>
     % endif
+
+    <li><strong>Files</strong>
+    <ul class="filelist">
+      % for file in files:
+      <li>
+        <a href="/package-file/${branch}/${package}/${file | h}">${file | h}</a>
+      </li>
+      % endfor
+    </ul></li>
+
+    <li><strong>Download Source</strong>
+    <ul class="dlsource">
+      <% ident = branch.replace("/", "-")+"-"+package %>
+      <li>
+        <a href="/source/${branch}/${ident}.tar.gz">
+          tar.gz</a>
+      </li>
+      <li>
+        <a href="/source/${branch}/${ident}.tar.bz2">
+          tar.bz2</a>
+      </li>
+    </ul>
+    </li>
+
   </ul>
 </section>
 
@@ -88,48 +112,9 @@ Package ${branch}/${package}
   ${pkg["description"] if "description" in pkg else "No description..." | h}
 </section>
 
-<section class="files">
-<h1>Files</h1>
-<ul>
-  % for file in files:
-  <li>
-    <a href="/package-file/${branch}/${package}/${file | h}">${file | h}</a>
-  </li>
-  % endfor
-</ul>
-</section>
-
-<section class="download_source">
-<h1>Download Source</h1>
-<ul>
-  <% ident = branch.replace("/", "-")+"-"+package %>
-  <li>
-    <a href="/source/${branch}/${ident}.tar.gz">
-      ${ident}.tar.gz</a>
-  </li>
-  <li>
-    <a href="/source/${branch}/${ident}.tar.bz2">
-      ${ident}.tar.bz2</a>
-  </li>
-</ul>
-</section>
-
-% if "sources" in pkg:
-<section class="sources">
-<h1>Sources</h1>
-<ul>
-   % for source in pkg["sources"]:
-    % if source[1]:
-      % if source[2]:
-        <li><a href="${source[2] | h}">${source[0] | h}</a></li>
-      % else:
-        <li>${source[0] | h}</li>
-      % endif
-    % else:
-      <li><a href="/package-file/${branch}/${package}/${source[2] | h}">${source[0] | h}</a></li>
-    %endif
-   % endfor
-</ul>
+% if readme:
+<section>
+${readme}
 </section>
 % endif
 

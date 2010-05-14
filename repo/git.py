@@ -99,6 +99,25 @@ class HurlGitRepo(dulwich.repo.Repo):
 
         return packages
 
+    def get_branch_readme(self, branch):
+        """
+            Get the contents of a branch README if it exists.
+        """
+        try:
+            sha = self.get_refs()["refs/heads/"+branch]
+        except KeyError:
+            return None
+
+        commit = self.commit(sha)
+        tree = self.tree(commit.tree)
+
+        for entry in tree.entries():
+            if entry[1] == "README":
+                blob = self.get_blob(entry[2])
+                return blob.as_raw_string()
+
+        return None
+
     def get_package_tree(self, branch, package):
         """
             Get the tree of files under a certain package in a branch.
@@ -134,6 +153,21 @@ class HurlGitRepo(dulwich.repo.Repo):
                 cakefile = yaml.load(blob, Loader=Loader)
                 del blob
                 return cakefile
+
+    def get_package_readme(self, branch=None, package=None, tree=None):
+        """
+            Get the contents of a package's README if it exists.
+        """
+        if branch is not None and package is not None:
+            tree = self.get_package_tree(branch, package)
+        if tree is None:
+            return None
+
+        for entry in tree.entries():
+            if entry[1] == "README":
+                blob = self.get_blob(entry[2])
+                return blob.as_raw_string()
+        return None
 
     def get_package_file(self, filename, branch=None, package=None, tree=None):
         """

@@ -1,9 +1,17 @@
 import cherrypy
 import json
 
+try:
+    import markdown
+    HAVE_MARKDOWN = True
+except ImportError:
+    HAVE_MARKDOWN = False
+
 class Package(object):
     def __init__(self, repo, lookup):
         self.repo, self.lookup = repo, lookup
+        self.md = markdown.Markdown(safe_mode="escape",
+            output_format="html")
 
     @cherrypy.expose
     def default(self, *ident, **kwargs):
@@ -25,6 +33,11 @@ class Package(object):
 
             pkg = self.repo.get_package_cakefile(branch, package)
             files = self.repo.get_package_files(branch, package)
+            readme = None
+
+            if HAVE_MARKDOWN:
+                readme = self.repo.get_package_readme(branch, package)
+                readme = self.md.convert(readme)
 
             if pkg is None or files is None:
                 raise cherrypy.NotFound()
@@ -53,7 +66,8 @@ class Package(object):
             return self.lookup.get_template("package.html").render(
                 branch=branch,
                 package=package,
-                pkg=pkg, files=files)
+                pkg=pkg, files=files,
+                readme=readme)
 
 class PackageLog(object):
     def __init__(self, repo, lookup):

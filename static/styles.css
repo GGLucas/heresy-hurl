@@ -166,6 +166,7 @@ section.description {
     display: block;
     column-width: 15em;
     -moz-column-width: 15em;
+    overflow: visible;
     padding-left: 1em;
 }
 
@@ -239,7 +240,7 @@ section.description {
     margin: 4px 0;
 }
 
-.pkglist li .dllink{
+.pkglist li .dllink {
     float: right;
     font-size: 65%;
     color: #aa5555;
@@ -309,6 +310,10 @@ p {
     padding-right: 20px;
     padding-top: 2px;
     background: url("/static/download.png") no-repeat right;
+}
+
+.dlsource a {
+    color: #aa5555;
 }
 
 .search_result .brlink {
