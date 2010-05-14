@@ -41,14 +41,15 @@ Package ${branch}/${package}
 
 <section>
   <ul class="infolist">
-    %if "website" in pkg:
 
     ${display(pkg, "name")}
 
+    %if "website" in pkg:
     <li><strong>Website</strong>
     <a href="${pkg['website']}">${pkg['website']}</a>
     % endif
 
+    ${display(pkg, "description")}
     ${display(pkg, "version")}
     ${display(pkg, "release")}
     ${display(pkg, "licenses")}
@@ -106,10 +107,6 @@ Package ${branch}/${package}
     </li>
 
   </ul>
-</section>
-
-<section class="description">
-  ${pkg["description"] if "description" in pkg else "No description..." | h}
 </section>
 
 % if readme:
