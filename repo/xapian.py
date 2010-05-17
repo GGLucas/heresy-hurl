@@ -87,6 +87,7 @@ class HurlXapianIndex(object):
         def iter_docs():
             for doc in results:
                 data = doc.data
+                print(repr(data))
 
                 # Use only the first data entry
                 for item in data:

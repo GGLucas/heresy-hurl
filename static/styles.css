@@ -295,7 +295,7 @@ p {
 .search_result p {
     font-size: 90%;
     margin: 0;
-    margin-top: 1em;
+    margin-top: 0.4em;
 }
 
 .search_result nav {
@@ -325,6 +325,24 @@ p {
 
 .search_result a span {
     color: #ee5555;
+}
+
+.search_result hgroup {
+    display: table;
+}
+
+.search_result h2, h3 {
+    display: table-cell;
+}
+
+.search_result h3 {
+    font-size: 0.9em;
+    padding-left: 1em;
+    color: #336633;
+}
+
+.search_result h3 span {
+    color: #888;
 }
 
 nav.guides, nav.main {

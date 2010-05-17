@@ -41,18 +41,21 @@ Search: ${query}
       branches with this package</a>
   </nav>
 
+  <hgroup>
   <h2><a href="/package/${branch | h}/${package | h}">
     ${branch | h}/<span>${package | h}</span></a></h2>
+  <h3>${pkg["version"]}<span>-${pkg["release"]}</span></h3>
+  </hgroup>
 
-  <ul class="tags">
   % if "tags" in pkg:
+  <ul class="tags">
     % for i, tag in enumerate(pkg["tags"]):
       <li><a href="/search/?q=tags:${tag}">
         ${tag | h}${", " if i < len(pkg["tags"])-1 else ''}
       </a></li>
     % endfor
-  % endif
   </ul>
+  % endif
 
   <p>${description | h}</p>
 
