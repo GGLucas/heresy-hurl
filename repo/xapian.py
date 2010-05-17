@@ -228,7 +228,7 @@ def main():
     if len(sys.argv) >= 4:
         if sys.argv[3] == "reindex":
             for branch in repo.get_branches():
-                for pkg in packages_in_branch(branch):
+                for pkg in repo.packages_in_branch(branch):
                     index.index_package(repo, branch, pkg)
         elif sys.argv[3] == "nop":
             return
