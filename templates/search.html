@@ -4,7 +4,7 @@
   ${'' if exact else "about"} <span>${num}</span> packages found
 </%def>
 
-<%def name="searchvalue()">${query}</%def>
+<%def name="searchvalue()">${query | entity}</%def>
 
 <%def name="crumbs()">
  &middot; <span>search</span>
