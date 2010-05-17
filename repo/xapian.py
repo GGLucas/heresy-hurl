@@ -10,6 +10,8 @@ INDEX_EXACT = ([xappy.FieldActions.INDEX_EXACT], {})
 
 FIELDS = {
     "name": [STORE_CONTENT, INDEX_FREETEXT],
+    "version": [STORE_CONTENT, INDEX_EXACT],
+    "release": [STORE_CONTENT, INDEX_EXACT],
     "description": [STORE_CONTENT, INDEX_FREETEXT],
     "tags": [STORE_CONTENT, INDEX_FREETEXT],
     "dependencies": [INDEX_NONDEFAULT],
@@ -187,7 +189,7 @@ class HurlXapianIndex(object):
                 if hasattr(data, "__iter__"):
                     data = " ".join(data)
 
-                doc.fields.append(xappy.Field(field.replace("-", ""), data))
+                doc.fields.append(xappy.Field(field.replace("-", ""), str(data)))
 
         # Add document to index
         self.db.replace(doc)
@@ -216,14 +218,22 @@ def main():
     from repo.git import HurlGitRepo
 
     if len(sys.argv) < 3:
-        print("USAGE: %s REPO DATABASE" % sys.argv[0])
+        print("USAGE: %s REPO DATABASE [COMMAND]" % sys.argv[0])
         return
 
     repo = HurlGitRepo(sys.argv[1])
     index = HurlXapianIndex(sys.argv[2])
     index.create()
 
-    listen(index, repo)
+    if len(sys.argv) >= 4:
+        if sys.argv[3] == "reindex":
+            for branch in repo.get_branches():
+                for pkg in packages_in_branch(branch):
+                    index.index_package(repo, branch, pkg)
+        elif sys.argv[3] == "nop":
+            return
+    else:
+        listen(index, repo)
 
 if __name__ == '__main__':
     main()
