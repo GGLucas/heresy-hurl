@@ -55,6 +55,15 @@ Package ${branch}/${package}
     ${display(pkg, "licenses")}
     ${display(pkg, "architectures")}
 
+    % if "tags" in pkg:
+    <li><strong>Tags</strong>
+    <ul class="taglist">
+     % for tag in pkg["tags"]:
+      <li><a href="/search/?q=tags:${tag | h}">${tag | h}</a></li>
+     % endfor
+    </ul>
+    % endif
+
     % if "dependencies" in pkg:
     <li><strong>Dependencies</strong>
     <ul class="deplist">
