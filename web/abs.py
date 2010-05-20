@@ -3,7 +3,7 @@ import yaml
 import cherrypy
 import tarfile
 import time
-from arch2cake import arch2cake, varrep
+from arch2cake import arch2cake, parse_pkgbuild, dump_cakefile
 
 try:
     from yaml import CDumper as Dumper
@@ -18,15 +18,21 @@ except ImportError:
 def getcakefile(path):
     # Converted cakefile
     try:
-        fd = open(path, "r")
-        data = arch2cake(fd)
-        build = data["build"].split("\n")
-        del data["build"]
-        fd.close()
+        output = StringIO.StringIO()
 
-        return yaml.dump(data, Dumper=Dumper, default_flow_style=False) + \
-               "build: |\n" + "  " + varrep("\n  ".join(build[:-1])) + "\n"
+        # Parse
+        with open(path, "r") as fd:
+            data = parse_pkgbuild(fd)
+
+        # Convert
+        data = arch2cake(data)
+
+        # Dump
+        dump_cakefile(data, output)
+
+        return output.getvalue()
     except:
+        raise
         return "An error occurred during PKGBUILD to Cakefile conversion."
 
 class Abs(object):
