@@ -22,7 +22,7 @@ class API(object):
             return retdata(data)
         except:
             logging.exception("JSON api error.")
-            return "['An error has occurred.']"
+            return retdata(None, {"error": "Unexpected error."})
 
     @cherrypy.expose
     def search(self):
@@ -39,7 +39,7 @@ class API(object):
             })
         except:
             logging.exception("JSON api error.")
-            return "['An error has occurred.']"
+            return retdata(None, {"error": "Unexpected error."})
 
     @cherrypy.expose
     def info(self):
@@ -57,7 +57,7 @@ class API(object):
             return retdata(data)
         except:
             logging.exception("JSON api error.")
-            return "['An error has occurred.']"
+            return retdata(None, {"error": "Unexpected error."})
 
     @cherrypy.expose
     def register(self):
@@ -70,7 +70,7 @@ class API(object):
             )
         except:
             logging.exception("JSON api error.")
-            return "['An error has occurred.']"
+            return retdata(None, {"error": "Unexpected error."})
 
     @cherrypy.expose
     def addkey(self):
@@ -86,7 +86,7 @@ class API(object):
             return retdata(self.access.add_key(user, data["key"]))
         except:
             logging.exception("JSON api error.")
-            return "['An error has occurred.']"
+            return retdata(None, {"error": "Unexpected error."})
 
     @cherrypy.expose
     def removekey(self):
@@ -102,7 +102,7 @@ class API(object):
             return retdata(self.access.remove_key(user, int(data["key"])))
         except:
             logging.exception("JSON api error.")
-            return "['An error has occurred.']"
+            return retdata(None, {"error": "Unexpected error."})
 
     @cherrypy.expose
     def listkeys(self):
@@ -118,7 +118,7 @@ class API(object):
             return retdata(self.access.list_keys(user))
         except:
             logging.exception("JSON api error.")
-            return "['An error has occurred.']"
+            return retdata(None, {"error": "Unexpected error."})
 
     @cherrypy.expose
     def changepassword(self):
@@ -134,15 +134,18 @@ class API(object):
             return retdata(self.access.change_password(user, data["newpassword"]))
         except:
             logging.exception("JSON api error.")
-            return "['An error has occurred.']"
+            return retdata(None, {"error": "Unexpected error."})
 
 
-def retdata(data):
+def retdata(data, extra=None):
     """
         Return data in the correct format.
     """
     cherrypy.response.headers['Content-Type'] = 'application/json'
-    return json.dumps({ "protocol":  PROTOCOL_VER,
-                        "data": data })
+    out = { "protocol":  PROTOCOL_VER, "data": data }
 
+    # Extra data
+    if extra is not None:
+        out.update(extra)
 
+    return json.dumps(out)
