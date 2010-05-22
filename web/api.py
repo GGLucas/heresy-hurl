@@ -49,6 +49,10 @@ class API(object):
             branch = "/".join(pkg[:-1])
 
             data = self.repo.get_package_cakefile(branch, pkg[-1])
+
+            if data is None:
+                return retdata(None)
+
             data.update({
                 "branch": branch,
                 "package": pkg[-1],
