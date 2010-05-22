@@ -46,10 +46,15 @@ class API(object):
         try:
             request = json.load(cherrypy.request.body)
             pkg = request["data"].split("/")
+            branch = "/".join(pkg[:-1])
 
-            return retdata(
-                self.repo.get_package_cakefile("/".join(pkg[:-1]), pkg[-1])
-            )
+            data = self.repo.get_package_cakefile(branch, pkg[-1])
+            data.update({
+                "branch": branch,
+                "package": pkg[-1],
+                "user": pkg[0]})
+
+            return retdata(data)
         except:
             logging.exception("JSON api error.")
             return "['An error has occurred.']"
