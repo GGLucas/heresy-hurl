@@ -45,18 +45,15 @@ class API(object):
     def info(self):
         try:
             request = json.load(cherrypy.request.body)
-            pkg = request["data"].split("/")
-            branch = "/".join(pkg[:-1])
-
-            data = self.repo.get_package_cakefile(branch, pkg[-1])
+            branch, pkg = self.repo.resolve(request["data"])
+            data = self.repo.get_package_cakefile(branch, pkg)
 
             if data is None:
                 return retdata(None)
 
             data.update({
                 "branch": branch,
-                "package": pkg[-1],
-                "user": pkg[0]})
+                "package": pkg})
 
             return retdata(data)
         except:
