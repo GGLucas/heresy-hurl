@@ -55,6 +55,10 @@ class API(object):
                 "branch": branch,
                 "package": pkg})
 
+            for elem in "build", "automaintain", "autotest":
+                if elem in data:
+                    del data[elem]
+
             return retdata(data)
         except:
             logging.exception("JSON api error.")
