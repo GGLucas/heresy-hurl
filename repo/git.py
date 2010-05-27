@@ -326,7 +326,7 @@ class HurlGitRepo(dulwich.repo.Repo):
             Replace variable fields in a string.
         """
         return re.sub(r"\$\{([^}]*)\}", lambda match: 
-         pkg[match.group(1)] if match.group(1) in pkg
+         str(pkg[match.group(1)]) if match.group(1) in pkg
         else "(null)", string)
 
     def parse_source(self, source, pkg=None):
