@@ -21,7 +21,7 @@ class Source(object):
         branch = "/".join(ident[:-1])
         brident = branch.replace("/", "-")
 
-        if not filename.startswith(brident):
+        if not filename.startswith(brident) or ".tar." not in filename:
             raise cherrypy.NotFound()
 
         package, _ = filename[len(brident)+1:].rsplit(".tar.", 1)

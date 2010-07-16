@@ -42,6 +42,15 @@ class API(object):
             return retdata(None, {"error": "Unexpected error."})
 
     @cherrypy.expose
+    def source(self):
+        request = json.load(cherrypy.request.body)
+        branch, pkg = self.repo.resolve(request["data"])
+
+        raise cherrypy.HTTPRedirect("/source/%s/%s-%s.tar.gz" % (
+            branch, branch.replace("/","-"), pkg
+        ), 303)
+
+    @cherrypy.expose
     def info(self):
         try:
             request = json.load(cherrypy.request.body)
