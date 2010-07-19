@@ -2,6 +2,7 @@ import os
 import sys
 import datetime
 import xappy
+import time
 
 STORE_CONTENT = ([xappy.FieldActions.STORE_CONTENT], {})
 INDEX_FREETEXT = ([xappy.FieldActions.INDEX_FREETEXT], {})
