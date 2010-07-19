@@ -42,6 +42,7 @@ class HurlXapianIndex(object):
         elif datetime.datetime.now()-self.updated > \
             datetime.timedelta(minutes=self.refresh_after):
             self.reload()
+            self.updated = datetime.datetime.now()
 
     def _connect_write(self):
         """
