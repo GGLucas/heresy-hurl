@@ -278,7 +278,7 @@ class HurlGitRepo(dulwich.repo.Repo):
             else:
                 tree = self.tree(commit.tree)
                 parent_trees = [self.tree(self.commit(par).tree)
-                    for par in commit.get_parents()]
+                    for par in commit._get_parents()]
 
                 changed = False
 
