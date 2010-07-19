@@ -179,9 +179,6 @@ class HurlXapianIndex(object):
         doc.fields.append(xappy.Field("priority", str(int(branch == "master"))))
         doc.id = branch+"/"+package
 
-        # Debug message
-        print("(Re)Indexing "+doc.id)
-
         # Add fields
         for field in FIELDS:
             if field in cakefile:
@@ -195,23 +192,43 @@ class HurlXapianIndex(object):
         # Add document to index
         self.db.replace(doc)
 
+    def delete_package(self, branch, package):
+        """
+            Delete a single package from the index.
+        """
+        self._connect_write()
+        self.db.delete(branch+"/"+package)
 
-def listen(index, repo, queue_name="/hurl-index"):
+def listen(index, repo, queue_key=1313):
     """
         Listen on a message queue for new packages to index.
     """
     # Create the queue
-    from posix_ipc import MessageQueue, O_CREAT
-    queue = MessageQueue(queue_name, O_CREAT)
+    from sysv_ipc import MessageQueue, IPC_CREAT
+    queue = MessageQueue(queue_key, IPC_CREAT)
 
     while True:
-        line, priority = queue.receive()
+        line, typ = queue.receive()
 
         if line.strip():
-            if "/" in line:
+            if typ == 3: # Deleted branch
+                pks = repo.packages_in_branch(line) or []
+                for pkg in pks:
+                    print("D "+line+"/"+pkg)
+                    index.delete_package(line, pkg)
+                    index.flush()
+            elif "/" in line:
+                time.sleep(1)
                 branch, package = map(str.strip, line.rsplit("/", 1))
-                index.index_package(repo, branch, package)
-                index.flush()
+
+                if typ == 1: # Changed
+                    print("M "+branch+"/"+package)
+                    index.index_package(repo, branch, package)
+                    index.flush()
+                elif typ == 2: # Deleted
+                    print("D "+branch+"/"+package)
+                    index.delete_package(branch, package)
+                    index.flush()
             else:
                 print("Error: `%s` is not a valid package.")
 
@@ -231,6 +248,10 @@ def main():
             for branch in repo.get_branches():
                 for pkg in repo.packages_in_branch(branch):
                     index.index_package(repo, branch, pkg)
+        elif sys.argv[3] == "list":
+            index._connect_read()
+            for ident in index.conn.iterids():
+                print(ident)
         elif sys.argv[3] == "nop":
             return
     else:
