@@ -9,6 +9,26 @@ try:
 except ImportError:
     import StringIO
 
+def tar_tree(tarf, folder, repo, tree):
+    for i, filename, ident in tree.entries():
+        obj = repo[ident]
+
+        if isinstance(obj, dulwich.objects.Blob):
+            blob = obj.as_raw_string()
+            length = len(blob)
+
+            string = StringIO.StringIO()
+            string.write(blob)
+            string.seek(0)
+
+            info = tarfile.TarInfo(name=os.path.join(folder, filename))
+            info.size = length
+            info.mtime = time.time()
+
+            tarf.addfile(tarinfo=info, fileobj=string)
+        elif isinstance(obj, dulwich.objects.Tree):
+            tar_tree(tarf, os.path.join(folder, filename), repo, obj)
+
 class Source(object):
     def __init__(self, repo, lookup):
         self.repo, self.lookup = repo, lookup
@@ -49,20 +69,6 @@ class Source(object):
         if tree is None:
             raise cherrypy.NotFound()
 
-        for i, filename, ident in tree.entries():
-            blob = self.repo[ident].as_raw_string()
-            length = len(blob)
-
-            string = StringIO.StringIO()
-            string.write(blob)
-            string.seek(0)
-
-            info = tarfile.TarInfo(name=os.path.join(
-                brident+"-"+package, filename))
-            info.size = length
-            info.mtime = time.time()
-
-            tarf.addfile(tarinfo=info, fileobj=string)
-
+        tar_tree(tarf, brident+"-"+package, self.repo, tree)
         tarf.close()
         return content.getvalue()
