@@ -1,3 +1,4 @@
+import dulwich
 import os
 import tarfile
 import cherrypy
@@ -49,7 +50,10 @@ class Source(object):
             raise cherrypy.NotFound()
 
         for i, filename, ident in tree.entries():
-            blob = self.repo.get_blob(ident).as_raw_string()
+            try:
+                blob = self.repo.get_blob(ident).as_raw_string()
+            except dulwich.errors.NotBlobError:
+                continue
             length = len(blob)
 
             string = StringIO.StringIO()

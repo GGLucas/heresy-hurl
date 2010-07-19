@@ -351,6 +351,7 @@ class HurlGitRepo(dulwich.repo.Repo):
                 source = self.insert_fields(pkg, source)
             external = any(source.startswith(src) for src in external)
             return [source, external, source]
+
     def resolve(self, name):
         """
             Resolve a package identifier to a (branch, package) pair.
@@ -359,6 +360,9 @@ class HurlGitRepo(dulwich.repo.Repo):
         if len(name) == 1:
             return "master", name[0]
         elif len(name) == 2:
-            return name[0]+"/default", name[1]
+            if name[0] == "master":
+                return "master", name[1]
+            else:
+                return name[0]+"/default", name[1]
         else:
             return "/".join(name[:-1]), name[-1]
