@@ -50,10 +50,7 @@ class Source(object):
             raise cherrypy.NotFound()
 
         for i, filename, ident in tree.entries():
-            try:
-                blob = self.repo.get_blob(ident).as_raw_string()
-            except dulwich.errors.NotBlobError:
-                continue
+            blob = self.repo[ident].as_raw_string()
             length = len(blob)
 
             string = StringIO.StringIO()

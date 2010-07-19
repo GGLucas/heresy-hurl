@@ -83,19 +83,17 @@ class HurlGitRepo(dulwich.repo.Repo):
             return None
 
         packages = []
-        commit = self.commit(sha)
-        tree = self.tree(commit.tree)
+        commit = self[sha]
+        tree = self[commit.tree]
 
         for package in tree.entries():
-            try:
-                subtree = self.tree(package[2])
-            except dulwich.errors.NotTreeError:
-                continue
+            subtree = self[package[2]]
 
-            for entry in subtree.entries():
-                if entry[1] == "Cakefile":
-                    packages.append(package[1])
-                    break
+            if isinstance(subtree, dulwich.objects.Tree):
+                for entry in subtree.entries():
+                    if entry[1] == "Cakefile":
+                        packages.append(package[1])
+                        break
 
         return packages
 
@@ -108,12 +106,12 @@ class HurlGitRepo(dulwich.repo.Repo):
         except KeyError:
             return None
 
-        commit = self.commit(sha)
-        tree = self.tree(commit.tree)
+        commit = self[sha]
+        tree = self[commit.tree]
 
         for entry in tree.entries():
             if entry[1] == "README":
-                blob = self.get_blob(entry[2])
+                blob = self[entry[2]]
                 return blob.as_raw_string()
 
         return None
@@ -127,15 +125,16 @@ class HurlGitRepo(dulwich.repo.Repo):
         except KeyError:
             return None
 
-        commit = self.commit(sha)
-        tree = self.tree(commit.tree)
+        commit = self[sha]
+        tree = self[commit.tree]
 
         for entry in tree.entries():
             if entry[1] == package:
-                try:
-                    subtree = self.tree(entry[2])
+                subtree = self[entry[2]]
+
+                if isinstance(subtree, dulwich.objects.Tree):
                     return subtree
-                except dulwich.errors.NotTreeError:
+                else:
                     return None
 
     def get_package_cakefile(self, branch=None, package=None, tree=None):
@@ -149,7 +148,7 @@ class HurlGitRepo(dulwich.repo.Repo):
 
         for entry in tree.entries():
             if entry[1] == "Cakefile":
-                blob = self.get_blob(entry[2]).as_raw_string()
+                blob = self[entry[2]].as_raw_string()
                 cakefile = yaml.load(blob, Loader=Loader)
                 del blob
                 return cakefile
@@ -165,7 +164,7 @@ class HurlGitRepo(dulwich.repo.Repo):
 
         for entry in tree.entries():
             if entry[1] == "README":
-                blob = self.get_blob(entry[2])
+                blob = self[entry[2]]
                 return blob.as_raw_string()
         return None
 
@@ -180,7 +179,7 @@ class HurlGitRepo(dulwich.repo.Repo):
 
         for entry in tree.entries():
             if entry[1] == filename:
-                return self.get_blob(entry[2]).as_raw_string()
+                return self[entry[2]].as_raw_string()
         return None
 
     def get_package_files(self, branch=None, package=None, tree=None):
@@ -276,8 +275,8 @@ class HurlGitRepo(dulwich.repo.Repo):
             if package is None:
                 log.append([data, message])
             else:
-                tree = self.tree(commit.tree)
-                parent_trees = [self.tree(self.commit(par).tree)
+                tree = self[commit.tree]
+                parent_trees = [self[self[par].tree]
                     for par in commit._get_parents()]
 
                 changed = False
